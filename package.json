@@ -1,10 +1,17 @@
 {
   "name": "nodejs-ex",
   "version": "0.0.1",
-  "description": "Node.js sample app for OpenShift 3",
-  "main": "server.js",
+  "description": "Node.js sample app for OpenShift 3 with express 4 split routing",
+  "main": "index.js",
   "dependencies": {
-    "chai": "^3.5.0",
+    "discord.js": "~11.3.2",
+    "request": "^2.81.0",
+    "rivescript": "^1.19.0",
+    "twitch-api-v5": "~2.0.2",
+    "upper-case": "~1.0",
+    "tape": "^4.7.0",
+    "dotenv": "~5.0.1",
+	"chai": "^3.5.0",
     "chai-http": "^2.0.1",
     "ejs": "^2.4.1",
     "express": "^4.13.4",
@@ -14,8 +21,8 @@
     "object-assign":"4.1.0"
   },
   "engine": {
-    "node": "*",
-    "npm": "*"
+    "node": "8.9.1",
+    "npm": "5.6.0"
   },
   "scripts": {
     "start": "node server.js",
