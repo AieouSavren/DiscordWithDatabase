@@ -56,11 +56,11 @@ module.exports = {
 		  }
 		  else
 		  {
-			  for(i3 = args.length-1; i3>=0;i3--)
+			  for(i3 = 0; i3>args.length-1;i3++)
 			  {
-				  returnmessage += args[i3];
+				  returnmessage += ' ' + args[i3] + ' ';
 			  }
-			   msg.channel.send('Sai blesses ' + author + ' with a ' + returnmessage + ' transformation!');
+			   msg.channel.send('Sai blesses ' + author + ' with a' + returnmessage + 'transformation!');
 			   return;
 		  }
     },
