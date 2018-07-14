@@ -58,9 +58,9 @@ module.exports = {
 		  {
 			  for(i3 = 0; i3<args.length;i3++)
 			  {
-				  returnmessage += ' ' + args[i3] + ' ';
+				  returnmessage += args[i3] + ' ';
 			  }
-			   msg.channel.send('Sai blesses ' + author + ' with a' + returnmessage + 'transformation!');
+			   msg.channel.send('Sai blesses ' + author + ' with a ' + returnmessage + 'transformation!');
 			   return;
 		  }
     },
