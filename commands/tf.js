@@ -23,12 +23,16 @@ module.exports = {
        var author = msg.author; 
 		  var i = Math.floor(InflatabelTypes.length*Math.random())
 		  var i2 = Math.floor(Species.length*Math.random())
-		  
+		  var returnmessage = "";
 		   
 		   //blue guilmon fix.
 		  if(msg.author.tag.toString() == "Cirus Kel#9823" && i2 == 7)
 		  {
-			i2 -= 1;
+			
+				while(i2 = 7)
+				{
+					i2 = Math.floor(Species.length*Math.random());
+				}
 		  }
 		  if(msg.member.roles.some(r=>["LOVED GOD OF INFLATABLES"].includes(r.name)))
 		  {
@@ -37,17 +41,7 @@ module.exports = {
 		   
 		  if(!Array.isArray(args) || args.length === 0)
 		  {
-			  if(i > 2)
-			  {
-				msg.channel.send('Sai blesses ' + author + ' with an' + InflatabelTypes[i] + ' ' + Species[i2] +  ' ' + 'transformation!');
-
-			  }
-			  else
-			  {
 				msg.channel.send('Sai blesses ' + author + ' with a' + InflatabelTypes[i] + ' ' + Species[i2] +  ' ' + 'transformation!');
-
-			  }
-			  
 			 
 		  }
 		  else if (args.length == 1)
@@ -58,6 +52,15 @@ module.exports = {
 		  else if(args.length == 2)
 		  {
 			   msg.channel.send('Sai blesses ' + author + ' with a ' + args[0] + ' ' + args[1] +  ' ' + 'transformation!');
+			   return;
+		  }
+		  else
+		  {
+			  for(i3 = args.length; i3>0;i3--)
+			  {
+				  returnmessage += args[i3];
+			  }
+			   msg.channel.send('Sai blesses ' + author + ' with a ' + returnmessage + ' transformation!');
 			   return;
 		  }
     },
