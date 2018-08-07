@@ -9,6 +9,17 @@ const client = new Discord.Client();
 const request = require('request');
 const util = require('util');
 
+//  OpenShift sample Node application
+var express = require('express'),
+    app     = express(),
+    morgan  = require('morgan');
+    
+Object.assign=require('object-assign')
+
+app.engine('html', require('ejs').renderFile);
+app.use(morgan('combined'))
+//derp
+
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
 for (const file of commandFiles) {

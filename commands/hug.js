@@ -1,3 +1,4 @@
+  var autoIncrement = require("mongodb-autoincrement");
 var HugAdverbs = new Array ();
 HugAdverbs[0] = "firmly";
 HugAdverbs[1] = "tightly";
@@ -12,7 +13,7 @@ HugAdverbs[9] = "ferociously";
 
 module.exports = {
     name: 'hug',
-	aliases: [],
+	aliases: ['hugs'],
 	cooldown: 5,
     description: 'You could use a hug!',
     execute(msg, args, db) {
@@ -46,12 +47,14 @@ module.exports = {
 		  } 
 		  else
 		  {
-			   if (!db) {
+			  
+				   if (!db) {
 				initDb(function(err){});
 			  }
 			  if (db) {
 			  try {
-					
+				  
+				  
 					autoIncrement.getNextSequence(db, 'hugs', function (err, autoIndex) {
 						if (err) throw err;
 						var collection = db.collection('hugs');
@@ -61,17 +64,19 @@ module.exports = {
 					});
 					}
 					catch (err) {
-					    msg.channel.send(err);
+						console.log(err);
+					    msg.channel.send('uh oh...');
 					}
 					
-			  }
-		  }
-		  if(!db)
-		  {
-			  //uhh maybe a database issue? Use the normal hug style.
 			  
-			  var i = Math.floor(HugAdverbs.length*Math.random());
-			  msg.channel.send('The Sai bot ' + HugAdverbs[i] + ' hugs ' +  author + '!');
+			  }
+			  if(!db)
+			  {
+				  //uhh maybe a database issue? Use the normal hug style.
+				  
+				  var i = Math.floor(HugAdverbs.length*Math.random());
+				  msg.channel.send('The Sai bot ' + HugAdverbs[i] + ' hugs ' +  author + '!');
+			  }
 		  }
 		  
        
