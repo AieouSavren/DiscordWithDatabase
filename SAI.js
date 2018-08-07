@@ -19,8 +19,62 @@ for (const file of commandFiles) {
    commands.set(command.name, command);
 }
 
+//database
+ 
+var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 27017,
+    ip   = process.env.IP   || process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1',
+    mongoURL = process.env.OPENSHIFT_MONGODB_DB_URL || process.env.MONGO_URL,
+    mongoURLLabel = "";
 
+if (mongoURL == null && process.env.DATABASE_SERVICE_NAME) {
+  var mongoServiceName = process.env.DATABASE_SERVICE_NAME.toUpperCase(),
+      mongoHost = process.env[mongoServiceName + '_SERVICE_HOST'],
+      mongoPort = process.env[mongoServiceName + '_SERVICE_PORT'],
+      mongoDatabase = process.env[mongoServiceName + '_DATABASE'],
+      mongoPassword = process.env[mongoServiceName + '_PASSWORD']
+      mongoUser = process.env[mongoServiceName + '_USER'];
 
+  if (mongoHost && mongoPort && mongoDatabase) {
+    mongoURLLabel = mongoURL = 'mongodb://';
+    if (mongoUser && mongoPassword) {
+      mongoURL += mongoUser + ':' + mongoPassword + '@';
+    }
+    // Provide UI label that excludes user id and pw
+    mongoURLLabel += mongoHost + ':' + mongoPort + '/' + mongoDatabase;
+    mongoURL += mongoHost + ':' +  mongoPort + '/' + mongoDatabase;
+
+  }
+}
+var db = null,
+    dbDetails = new Object();
+
+var initDb = function(callback) {
+  if (mongoURL == null) return;
+
+  var mongodb = require('mongodb');
+  if (mongodb == null) return;
+
+  mongodb.connect(mongoURL, function(err, conn) {
+    if (err) {
+      callback(err);
+      return;
+    }
+
+    db = conn;
+    dbDetails.databaseName = db.databaseName; //there's a defined default?... apparently admin on unsecure systems. 
+    dbDetails.url = mongoURLLabel;
+    dbDetails.type = 'MongoDB';
+
+    console.log('Connected to MongoDB at: %s', mongoURL);
+  });
+};
+
+initDb(function(err){
+  console.log('Error connecting to Mongo. Message:\n'+err);
+
+});
+
+//database functions above
 
 
 
@@ -51,6 +105,12 @@ client.on("message", async msg => {
 	msg.channel.send('The Sai bot meditates attempting to understand your command better.');		
 	return;
 	}
+	
+	//every good command needs some memory... maybe? hmm could cut down on this by letting the commands pick and choose to init the db.
+	if (!db) {
+    initDb(function(err){});
+	}
+	
 	//does our command have a cool down?
 	if (!cooldowns.has(command.name)) {
     cooldowns.set(command.name, new Discord.Collection());
@@ -67,7 +127,6 @@ client.on("message", async msg => {
 		//okay you're fine to use the command
 		    timestamps.set(msg.author.id, now);
 			setTimeout(() => timestamps.delete(msg.author.id), cooldownAmount);
-
 	}
 	else {
 		  const expirationTime = timestamps.get(msg.author.id) + cooldownAmount;
@@ -84,7 +143,7 @@ client.on("message", async msg => {
 
 	
 	try {
-		 command.execute(msg, args);
+		 command.execute(msg, args, db);
 	}
 	catch (error) {
 		console.error(error);

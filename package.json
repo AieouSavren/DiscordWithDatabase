@@ -6,6 +6,7 @@
   "dependencies": {
     "discord.js": "~11.3.2",
     "request": "^2.81.0",
+	"mongodb-autoincrement":"^1.0.1",
     "rivescript": "^1.19.0",
     "twitch-api-v5": "~2.0.2",
     "upper-case": "~1.0",
