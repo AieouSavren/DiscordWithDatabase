@@ -41,7 +41,7 @@ module.exports = {
 					
 				var query = { adverbs: returnmessage };
 
-				db.collection("hugs").deleteOne(query, (function(err, result) {
+				db.collection("hugs").deleteOne(query, function(err, result) {
 				if (err) throw err;
 				 msg.channel.send('Yeah ' + returnmessage + ' was not a good way to hug someone.');
 			  });
