@@ -7,7 +7,10 @@ module.exports = {
     description: 'builds a database! Be amazed be very amazed.',
     execute(msg, args, db) {
         //console.log('working...');
-		
+		if(!msg.member.roles.some(r=>["Administrator", "Moderator"].includes(r.name)) )
+		{
+		return msg.reply("Sorry, you don't have permissions to use this!");
+		}
 		  // try to initialize the db on every request if it's not already
 		  // initialized.
 		  if (!db) {
