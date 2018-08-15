@@ -22,7 +22,7 @@ module.exports = {
 					for(i = rolls[0]; i > 0; i--)
 					{
 					  var returnnum = Math.floor(rolls[1]*Math.random());
-					  returnnum + 1;
+					  returnnum = returnnum + 1;
 					  console.log('roll: ' + returnnum);
 					}
 			   }
