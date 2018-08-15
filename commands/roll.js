@@ -8,7 +8,7 @@ module.exports = {
 	   
 	   if(!args.length)
 	   {
-		    console.log('no args expecting the command in the format of !roll 1d20');
+		    msg.channel.send('no args expecting the command in the format of !roll 1d20');
 	   }
 	   else
 	   {
@@ -23,12 +23,12 @@ module.exports = {
 					{
 					  var returnnum = Math.floor(rolls[1]*Math.random());
 					  returnnum + 1;
-					  console.log('roll: ' + returnnum);
+					  msg.channel.send('roll: ' + returnnum);
 					}
 			   }
 			   else
 			   {
-				   console.log('didnt split expecting the command in the format of !roll 1d20');
+				   msg.channel.send('didnt split expecting the command in the format of !roll 1d20');
 			   }
 			   
 			   
@@ -36,7 +36,7 @@ module.exports = {
 		   }
 		   else
 		   {
-			   console.log('expecting the command in the format of !roll 1d20');
+			   msg.channel.send('expecting the command in the format of !roll 1d20');
 		   }
 		}
 	
