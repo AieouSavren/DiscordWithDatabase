@@ -36,7 +36,7 @@ module.exports = {
 		}
 
 		
-		msg.channel.send(data, { split: true })
+		console.log(data, { split: true })
 		
 		//dm? No people probably wanna know it's got a cool down too.
 			/*

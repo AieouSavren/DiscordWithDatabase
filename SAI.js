@@ -4,6 +4,7 @@ const fs = require('fs');
 const Discord = require('discord.js');
 commands = new Discord.Collection();
 const cooldowns = new Discord.Collection();
+var aborts = false;
 
 const client = new Discord.Client();
 const request = require('request');
@@ -151,10 +152,10 @@ client.on("message", async msg => {
 		timestamps.set(msg.author.id, now);
 		setTimeout(() => timestamps.delete(msg.author.id), cooldownAmount);
 	}
-
+	//coodowns done 
 	
 	try {
-		 command.execute(msg, args, db);
+		 command.execute(msg, args, db, aborts);
 	}
 	catch (error) {
 		console.error(error);

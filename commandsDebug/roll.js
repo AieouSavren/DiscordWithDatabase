@@ -3,7 +3,7 @@ module.exports = {
 	aliases: ['rolls'],
 	cooldown: 5,
     description: 'Lets roll some dice!',
-    execute(msg, args) {
+    execute(msg, args, db, abort) {
        var author = msg.author; 
 	   
 	   if(!args.length)
@@ -21,6 +21,12 @@ module.exports = {
 			   
 					for(i = rolls[0]; i > 0; i--)
 					{
+						if(abort)
+						{
+							break;
+							break;
+							abort = false;
+						}
 					  var returnnum = Math.floor(rolls[1]*Math.random());
 					  returnnum = returnnum + 1;
 					  console.log('roll: ' + returnnum);

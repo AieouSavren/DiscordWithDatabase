@@ -57,19 +57,22 @@ module.exports = {
 					  db.collection("counters").find(query, {_id: 0, seq: 1}).toArray(function(err, result) {
 						if (err) throw err;
 						num = result[0].seq;
-						});
+						
 					 
 					db.collection("counters").findOneAndUpdate({"_id": "hugs"}, {$set: {"seq": num-1}},  function(err,doc) {
 					   if (err) { throw err; }
 					   else { console.log("Updated Counter"); }
 					});
+					});
+					for(counter = 1; counter < num-1; counter++)
+					{
 					
-					
-					 db.collection("hugs").find(query, {_id: 0, seq: 1}).toArray(function(err, result) {
-						if (err) throw err;
-						num = result[0].seq;
+						var query = { "_id": counter}
+					 db.collection("hugs").findOneAndUpdate(query, {$set: {"_id": counter}},  function(err,doc) {
+					   if (err) { throw err; }
+					   else { console.log("Updated id:" + counter); }
 						});
-					
+					}
 					//change the index of hugs _id
 					
 				

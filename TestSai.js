@@ -5,6 +5,7 @@ const readline = require('readline');
 const Discord = require('discord.js');
 commands = new Discord.Collection();
 const cooldowns = new Discord.Collection();
+var aborts = false;
 
 const request = require('request');
 const util = require('util');
@@ -116,7 +117,7 @@ rl.on('line', (input) => {
 
 		
 		try {
-			 command.execute(input, args, db);
+			 command.execute(input, args, db, aborts);
 		}
 		catch (error) {
 			console.error(error);
