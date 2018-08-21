@@ -35,7 +35,7 @@ module.exports = {
 			  if (db) {
 			  try {
 				  
-				  for(i3 = 0; i3<args.length;i3++)
+				  for(i3 = 0; i3<args.length-1;i3++)
 				  {
 				  returnmessage += args[i3] + ' ';
 				  }
