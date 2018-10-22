@@ -110,7 +110,7 @@ rl.on('line', (input) => {
 		//that's not a command name!
 		if (!command) 
 		{
-		console.log('The Sai bot meditates attempting to understand your command better.');		
+		console.log('The Sai bot meditates in an attempt to understand your command better.');		
 		return;
 		}
 		
