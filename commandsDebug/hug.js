@@ -22,7 +22,9 @@ module.exports = {
 		  
 		if (!args.length) {
 			  if (!db) {
-				initDb(function(err){});
+				//initDb(function(err){});
+				var rand = Math.floor(Math.random() * HugAdverbs.length); 
+				 console.log('The Sai bot ' + HugAdverbs[rand] + ' hugs ' +  author + '!');
 			  }
 			  if (db) {
 				var query = { _id: "hugs" };

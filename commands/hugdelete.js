@@ -28,7 +28,7 @@ module.exports = {
 		  {
 			  
 			  if (!db) {
-			  initDb(function(err){});
+			  msg.channel.send('SAI is very forgetful today.');
 			  }
 			  if (db) {
 				
@@ -40,6 +40,8 @@ module.exports = {
 					  returnmessage += args[i3] + ' ';
 					}	
 						
+					returnmessage += args[args.length-1];
+					
 						var query = { adverbs: returnmessage };
 
 						db.collection("hugs").remove(query, true, function(err, result) {
@@ -49,7 +51,7 @@ module.exports = {
 							console.log('Something went wrong... maybe that was not an option?');
 							return; //dont sort or change the count if we couldnt remove an element
 							}
-							 console.log('Yeah ' + returnmessage + ' was not a good way to hug someone.');
+							 msg.channel.send('Yeah ' + returnmessage + ' was not a good way to hug someone.');
 						});
 						  
 					var query = { "_id": "hugs"}	  
@@ -83,7 +85,7 @@ module.exports = {
 			  catch(err)
 			  {
 				  console.log(err);
-				  console.log('Something went wrong... maybe that was not an option?');
+				  msg.channel.send('Something went wrong... maybe that was not an option?');
 			  }
 		  
 		  }

@@ -1,15 +1,5 @@
   var autoIncrement = require("mongodb-autoincrement");
-var HugAdverbs = new Array ();
-HugAdverbs[0] = "firmly";
-HugAdverbs[1] = "tightly";
-HugAdverbs[2] = "noisily";
-HugAdverbs[3] = "merrily";
-HugAdverbs[4] = "quickly";
-HugAdverbs[5] = "eagerly";
-HugAdverbs[6] = "tiredly";
-HugAdverbs[7] = "joyously";
-HugAdverbs[8] = "zealously";
-HugAdverbs[9] = "ferociously";
+
 
 module.exports = {
     name: 'hugadd',
@@ -29,8 +19,16 @@ module.exports = {
 		  else
 		  {
 			  
-				   if (!db) {
-				initDb(function(err){});
+				if (!db) {
+				  for(j3 = 0; j3<args.length-1;j3++)
+				  {
+				  returnmessage += args[j3] + ' ';
+				  }
+				  
+				  returnmessage += args[args.length-1];
+				   
+				   console.log('SAI cannot rember to hug "' + returnmessage + '" right now.' ); 
+				return;
 			  }
 			  if (db) {
 			  try {
@@ -54,12 +52,7 @@ module.exports = {
 					
 			  
 			  }
-			  if(!db)
-			  {
-				  //uhh maybe a database issue? Use the normal hug style.
-				   console.log('uh oh...'); 
-				  //umm failure state...
-			  }
+			  
 		  }
 		  
        

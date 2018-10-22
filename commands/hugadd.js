@@ -30,7 +30,16 @@ module.exports = {
 		  {
 			  
 				   if (!db) {
-				initDb(function(err){});
+				//initDb(function(err){});
+				  for(i3 = 0; i3<args.length-1;i3++)
+				  {
+				  returnmessage += args[i3] + ' ';
+				  }
+				  
+				    returnmessage += args[args.length-1];
+				  
+				   msg.channel.send('SAI cannot rember to hug "'  returnmessage '" right now.' ); 
+				return;
 			  }
 			  if (db) {
 			  try {
@@ -39,6 +48,9 @@ module.exports = {
 				  {
 				  returnmessage += args[i3] + ' ';
 				  }
+				  
+				    returnmessage += args[args.length];
+				  
 					autoIncrement.getNextSequence(db, 'hugs', function (err, autoIndex) {
 						if (err) throw err;
 						var collection = db.collection('hugs');
@@ -54,12 +66,7 @@ module.exports = {
 					
 			  
 			  }
-			  if(!db)
-			  {
-				  //uhh maybe a database issue? Use the normal hug style.
-				   msg.channel.send('uh oh...'); 
-				  //umm failure state...
-			  }
+			
 		  }
 		  
        

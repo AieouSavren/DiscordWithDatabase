@@ -28,7 +28,7 @@ module.exports = {
 		  {
 			  
 			  if (!db) {
-			  initDb(function(err){});
+			  console.log('SAI is very forgetful today.');
 			  }
 			  if (db) {
 				
@@ -39,6 +39,8 @@ module.exports = {
 					  returnmessage += args[i3] + ' ';
 					}	
 						
+					 returnmessage += args[args.length-1];
+					 
 						var query = { adverbs: returnmessage };
 
 						db.collection("hugs").remove(query, true, function(err, result) {
