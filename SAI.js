@@ -114,7 +114,7 @@ client.on("message", async msg => {
 	//that's not a command name!
 	if (!command) 
 	{
-	msg.channel.send('The Sai bot meditates *in an attempt* to understand your command better.');		
+	msg.channel.send('The Sai bot meditates in an attempt to understand your command better.');		
 	return;
 	}
 	

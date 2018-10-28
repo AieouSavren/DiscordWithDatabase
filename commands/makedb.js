@@ -14,7 +14,9 @@ module.exports = {
 		  // try to initialize the db on every request if it's not already
 		  // initialized.
 		  if (!db) {
-			initDb(function(err){});
+			//initDb(function(err){});
+			//Throw an error or mention something went wrong...
+			
 		  }
 		  if (db) {
 			  //todo add a check if this was already run
