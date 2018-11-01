@@ -101,9 +101,35 @@ rl.on('line', (input) => {
 	
 	
   console.log(`Received: ${input}`);
+		
+  		const re = new RegExp('^'+process.env.PREFIX+process.env.PREFIX+'+');
+		/*
+			Because the definition of args slices off the first prefix... if it's empty,
+			then our actual command is empty. The regexp is tested on the original message,
+			minus this slicing. If it evaluates to true, then our command has too many
+			prefixes at the beginning, and so we reject that too.
+		*/
+		if (re.test(input)) {
+			return; // Don't send a "command not understood" message. Return silently.
+		}
+  
+  
 	   const args = input.slice(process.env.PREFIX.length).trim().split(/ +/g);
-	  const commandName = args.shift().toLowerCase();
+	   const commandName = args.shift().toLowerCase();
+		if(commandName == "")
+		{
+			return; //empty command;
+		}
 	  
+		//the command is empty, or consists entirely of the prefix!
+		/*
+			First, set up a regular expression to test for that latter case.
+			It looks confusing... but if the prefix is "!" then our regexp is just /^!!+/.
+			/^!!+/ matches the prefix (only at the beginning of the string!), followed 
+			by the prefix once or more. So '!!hello' is ignored, but '!hello!!' is not.
+		*/
+
+  
 		
 		const command = commands.get(commandName) || commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
 	  
