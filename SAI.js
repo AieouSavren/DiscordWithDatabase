@@ -132,7 +132,7 @@ client.on("message", async msg => {
 		If it evaluates to true, then our command has too many
 		prefixes at the beginning, and so we reject it.
 	*/
-	if (re.test(input)) {
+	if (re.test(msg.content)) {
 		return; //command is just prefixes, or too many prefixes. Return silently.
 	}
 	
