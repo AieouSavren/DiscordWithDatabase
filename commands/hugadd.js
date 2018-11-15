@@ -38,7 +38,7 @@ module.exports = {
 				  
 				    returnmessage += args[args.length-1];
 				  
-				   msg.channel.send('SAI cannot rember to hug "' + returnmessage + '" right now.' ); 
+				   msg.channel.send('SAI cannot remember to hug "' + returnmessage + '" right now.' ); 
 				return;
 			  }
 			  if (db) {
