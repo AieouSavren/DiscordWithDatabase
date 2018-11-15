@@ -106,6 +106,35 @@ client.on("message", async msg => {
 	
 	const args = msg.content.slice(process.env.PREFIX.length).trim().split(/ +/g);
 	const commandName = args.shift().toLowerCase();
+	// After these two statements, args consists of an array of arguments,
+	// minus the command that directly follows the prefix.
+	
+	
+	//the command is empty!
+	if(commandName == "")
+	{
+		return; //empty command. Return silently.
+	}
+	
+	
+	//the command has too many prefixes, or is ONLY prefixes!
+	/*
+		Set up a regular expression to test for a message that has too many prefixes.
+		It looks confusing... but if the prefix is "!" then our regexp is just /^!!+/.
+		/^!!+/ matches the prefix (only at the beginning of the string!), followed 
+		by the prefix once or more. So '!!hello' is ignored, but '!hello!!' is not.
+		KNOWN BUG: Doesn't work for multi-character prefixes!
+	*/
+	const re = new RegExp('^'+process.env.PREFIX+process.env.PREFIX+'+');
+	/*
+		The regexp is tested on the original message,
+		minus the slicing applied by the declaration of args.
+		If it evaluates to true, then our command has too many
+		prefixes at the beginning, and so we reject it.
+	*/
+	if (re.test(input)) {
+		return; //command is just prefixes, or too many prefixes. Return silently.
+	}
 	
 	
 	const command = commands.get(commandName) || commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
