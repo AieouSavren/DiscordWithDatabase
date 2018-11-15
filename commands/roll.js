@@ -21,6 +21,11 @@ module.exports = {
 			   
 					for(i = rolls[0]; i > 0; i--)
 					{
+						if(i > 50)
+						{
+							break;
+							break;
+						}
 						if(abort)
 						{
 							break;

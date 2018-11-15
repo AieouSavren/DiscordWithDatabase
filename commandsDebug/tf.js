@@ -4,7 +4,7 @@ module.exports = {
 	cooldown: 5,
     description: 'Time for a blessing!',
     execute(msg, args) {
-		var InflatabelTypes = new Array ();
+		var InflatableTypes = new Array ();
 		InflatabelTypes[0] = " parade balloon";
 		InflatabelTypes[1] = " balloonie";
 		InflatabelTypes[2] = "";
@@ -28,7 +28,7 @@ module.exports = {
 
 		  if(!Array.isArray(args) || args.length === 0)
 		  {
-				console.log('Sai blesses ' + author + ' with a' + InflatabelTypes[i] + ' ' + Species[i2] +  ' ' + 'transformation!');
+				console.log('Sai blesses ' + author + ' with a' + InflatableTypes[i] + ' ' + Species[i2] +  ' ' + 'transformation!');
 			 
 		  }
 		  else if (args.length == 1)

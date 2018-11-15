@@ -9,41 +9,75 @@ module.exports = {
     execute(msg, args, db) {
 		 var author = msg.author; 
 		  var num = 0;
+		   var returnInflatabeType = "";
+		   var returnSpecies = "";
 		   var returnmessage = "";
 		  
-		  if (!args.length) {
-			return console.log("Add an transformation to SAI's database of transformations! e.g. big balloonie_bunny lets anyone be a big balloonie or a bunny");
+		  if (!args.length || args.length-1 >= 2) {
+			return console.log("Add an transformation to SAI's database of transformations! e.g. big_balloonie bunny_cutie lets anyone be a big balloonie or a cute bunny");
 			
 			//maybe pm a list of current adverbs o3o? It could be a very very long list... 
 		  } 
 		  else
 		  {
+			 var InflatableTypes = new Array ();
+			 var Species = new Array ();
+			  
+			 args[0] = args[0].replace(/_/g, ' ');
+			 InflatableTypes = args[0].split(/ +/g);
+			 
+			 args[1] = args[1].replace(/_/g, ' ');
+			 Species = args[1].split(/ +/g);
+			  
+			    for(i1 = 0; i1<InflatableTypes.length-1;i1++)
+				  {
+				  returnInflatabeType += InflatableTypes[i1] + ' ';
+				  }
+				  returnInflatabeType += InflatableTypes[InflatableTypes.length-1];
+				  
+				  
+				for(i2 = 0; i2<Species.length-1;i2++)
+				  {
+				  returnSpecies += Species[i2] + ' ';
+				  }
+				  returnSpecies += Species[Species.length-1];
 			  
 				if (!db) {
-				  for(j3 = 0; j3<args.length-1;j3++)
-				  {
-				  returnmessage += args[j3] + ' ';
-				  }
-				  
-				  returnmessage += args[args.length-1];
-				   
-				   console.log('SAI cannot rember to hug "' + returnmessage + '" right now.' ); 
+				 console.log('SAI cannot rember to bless cuties with a "' + returnInflatabeType + ' ' + returnSpecies + '" transformation right now.' ); 
 				return;
 			  }
 			  if (db) {
 			  try {
 				  
-				  for(i3 = 0; i3<args.length-1;i3++)
-				  {
-				  returnmessage += args[i3] + ' ';
-				  }
-					autoIncrement.getNextSequence(db, 'hugs', function (err, autoIndex) {
+				var InflatableTypes = new Array ();
+				var Species = new Array ();
+			  
+				args[0] = args[0].replace(/_/g, ' ');
+				InflatableTypes = args[0].split(/ +/g);
+			 
+				args[1] = args[1].replace(/_/g, ' ');
+				Species = args[1].split(/ +/g);
+			 
+					autoIncrement.getNextSequence(db, 'inf', function (err, autoIndex) {
 						if (err) throw err;
-						var collection = db.collection('hugs');
-						collection.insert({ _id: autoIndex, adverbs: returnmessage });
-						console.log('The Sai bot can now hug ' + returnmessage + '!');
+						var collection = db.collection('inf');
+						collection.insert({ _id: autoIndex, adverbs: args[0] });
+						//console.log('The Sai bot can now hug ' + returnmessage + '!');
 						
 					});
+					
+					
+					autoIncrement.getNextSequence(db, 'species', function (err, autoIndex) {
+						if (err) throw err;
+						var collection = db.collection('species');
+						collection.insert({ _id: autoIndex, adverbs: args[1] });
+						//console.log('The Sai bot can now hug ' + returnmessage + '!');
+						
+					});
+					
+					console.log('SAI can now bless cuties with a "' + returnInflatabeType + ' ' + returnSpecies + '" transformation!' ); 
+
+					
 					}
 					catch (err) {
 						console.log(err);
