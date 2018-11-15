@@ -61,29 +61,28 @@ var db = null,
     dbDetails = new Object();
 
 var initDb = function(callback) {
-  if (mongoURL == null) return;
+	if (mongoURL == null) return;
 
-  var mongodb = require('mongodb');
-  if (mongodb == null) return;
+	var mongodb = require('mongodb');
+	if (mongodb == null) return;
 
-  mongodb.connect(mongoURL, function(err, conn) {
-    if (err) {
-      callback(err);
-      return;
-    }
+	mongodb.connect(mongoURL, function(err, conn) {
+		if (err) {
+			callback(err);
+			return;
+		}
 
-    db = conn;
-    dbDetails.databaseName = db.databaseName; //there's a defined default?... apparently admin on unsecure systems. 
-    dbDetails.url = mongoURLLabel;
-    dbDetails.type = 'MongoDB';
+		db = conn;
+		dbDetails.databaseName = db.databaseName; //there's a defined default?... apparently admin on unsecure systems. 
+		dbDetails.url = mongoURLLabel;
+		dbDetails.type = 'MongoDB';
 
-    console.log('Connected to MongoDB at: %s', mongoURL);
-  });
+		console.log('Connected to MongoDB at: %s', mongoURL);
+	});
 };
 
 initDb(function(err){
-  console.log('Error connecting to Mongo. Message:\n'+err);
-
+	console.log('Error connecting to Mongo. Message:\n'+err);
 });
 
 //database functions above
@@ -102,15 +101,15 @@ client.on("message", async msg => {
 	
 	/*
 	if(!msg.member.roles.some(r=>["Administrator", "Moderator"].includes(r.name)) )
-      return msg.reply("Sorry, you don't have permissions to use this!");
-  */
-  
-  const args = msg.content.slice(process.env.PREFIX.length).trim().split(/ +/g);
-  const commandName = args.shift().toLowerCase();
-  
+		return msg.reply("Sorry, you don't have permissions to use this!");
+	*/
+	
+	const args = msg.content.slice(process.env.PREFIX.length).trim().split(/ +/g);
+	const commandName = args.shift().toLowerCase();
+	
 	
 	const command = commands.get(commandName) || commands.find(cmd => cmd.aliases && cmd.aliases.includes(commandName));
-  
+	
 	//that's not a command name!
 	if (!command) 
 	{
@@ -120,12 +119,12 @@ client.on("message", async msg => {
 	
 	//every good command needs some memory... maybe? hmm could cut down on this by letting the commands pick and choose to init the db.
 	if (!db) {
-    initDb(function(err){});
+		initDb(function(err){});
 	}
 	
 	//does our command have a cool down?
 	if (!cooldowns.has(command.name)) {
-    cooldowns.set(command.name, new Discord.Collection());
+		cooldowns.set(command.name, new Discord.Collection());
 	}
 
 	//what time is it
@@ -137,13 +136,13 @@ client.on("message", async msg => {
 
 	if (!timestamps.has(msg.author.id)) {
 		//okay you're fine to use the command
-		    timestamps.set(msg.author.id, now);
-			setTimeout(() => timestamps.delete(msg.author.id), cooldownAmount);
+		timestamps.set(msg.author.id, now);
+		setTimeout(() => timestamps.delete(msg.author.id), cooldownAmount);
 	}
 	else {
-		  const expirationTime = timestamps.get(msg.author.id) + cooldownAmount;
+		const expirationTime = timestamps.get(msg.author.id) + cooldownAmount;
 
-		  //uh-oh you've gotta wait
+		//uh-oh you've gotta wait
 		if (now < expirationTime) {
 			const timeLeft = (expirationTime - now) / 1000;
 			return msg.reply(`please wait ${timeLeft.toFixed(1)} more second(s) before reusing the \`${command.name}\` command.`);
@@ -164,27 +163,27 @@ client.on("message", async msg => {
 	
 	//Close the DB... we're async... so this might create a race condition... hopefully a defult time out will handle it. 
 	//db.close();
-  
+
 });
 
 // Create an event listener for new guild members
 client.on('guildMemberAdd', member => {
-  // Send the message to a designated channel on a server:
-  const channel = member.guild.channels.find('name', 'shrine-artificial-intellegence');
-  // Do nothing if the channel wasn't found on this server
-  if (!channel) return;
-  // Send the message, mentioning the member
-  channel.send(`Welcome to the server, ${member}`);
+	// Send the message to a designated channel on a server:
+	const channel = member.guild.channels.find('name', 'shrine-artificial-intellegence');
+	// Do nothing if the channel wasn't found on this server
+	if (!channel) return;
+	// Send the message, mentioning the member
+	channel.send(`Welcome to the server, ${member}`);
 });
 
 // Create an event listener for leaving guild members
 client.on('guildMemberRemove', member => {
-  // Send the message to a designated channel on a server:
-  const channel = member.guild.channels.find('name', 'shrine-artificial-intellegence');
-  // Do nothing if the channel wasn't found on this server
-  if (!channel) return;
-  // Send the message, mentioning the member
-  channel.send(`${member} has left the server`);
+	// Send the message to a designated channel on a server:
+	const channel = member.guild.channels.find('name', 'shrine-artificial-intellegence');
+	// Do nothing if the channel wasn't found on this server
+	if (!channel) return;
+	// Send the message, mentioning the member
+	channel.send(`${member} has left the server`);
 });
 
 client.login(process.env.TOKEN);
