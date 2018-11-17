@@ -5,10 +5,10 @@ module.exports = {
     description: 'Time for a blessing!',
     execute(msg, args) {
 		var InflatableTypes = new Array ();
-		InflatabelTypes[0] = " parade balloon";
-		InflatabelTypes[1] = " balloonie";
-		InflatabelTypes[2] = "";
-		InflatabelTypes[3] = " inflatable";
+		InflatableTypes[0] = " parade balloon";
+		InflatableTypes[1] = " balloonie";
+		InflatableTypes[2] = "";
+		InflatableTypes[3] = " inflatable";
 
 		var Species = new Array ();
 		Species[0] = "fox";
@@ -21,7 +21,7 @@ module.exports = {
 		Species[7] = "guilmon";
 		
        var author = msg.author; 
-		  var i = Math.floor(InflatabelTypes.length*Math.random())
+		  var i = Math.floor(InflatableTypes.length*Math.random())
 		  var i2 = Math.floor(Species.length*Math.random())
 		  var returnmessage = "";
 		   
