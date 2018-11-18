@@ -5,9 +5,10 @@ Getting the bot running locally:
 
 1. Install the dependencies
 
-   grab the latest Node JS 
-   https://nodejs.org/en/download/current/
+   grab the latest Node JS (https://nodejs.org/en/download/current/)
+   
    (Mongo DB is optional)
+   
    https://www.mongodb.com/download-center/community
 
 2. Clone the repo
