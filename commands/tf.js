@@ -20,7 +20,7 @@ module.exports = {
 		Species[6] = "renamon";
 		Species[7] = "guilmon";
 		
-       var author = msg.author; 
+        var author = msg.author; 
 		  var i = Math.floor(InflatableTypes.length*Math.random())
 		  var i2 = Math.floor(Species.length*Math.random())
 		  var returnmessage = "";

@@ -5,6 +5,7 @@ module.exports = {
 	aliases: ['db', 'setup', 'makedb'],
 	cooldown: 5,
     description: 'Builds a database! Be amazed, be very amazed.',
+    usage: ' ',
     execute(msg, args, db) {
         //console.log('working...');
 		

@@ -8,6 +8,7 @@ module.exports = {
 	aliases: ['commands'],
 	cooldown: 0,
     description: 'List all of my commands, or info about a specific command.',
+    usage: '[command]',
     execute(msg, args) {
 		const data = [];
 		
@@ -21,7 +22,8 @@ module.exports = {
 			//consider adjusting the cool down?
 			
 			if (!commands.has(args[0])) {
-				return message.reply('That\'s not a valid command!');
+				console.log('That\'s not a valid command!');
+				return;
 			}
 
 			const command = commands.get(args[0]);
