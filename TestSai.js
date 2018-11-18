@@ -89,6 +89,8 @@ const rl = readline.createInterface({
 	output: process.stdout
 });
 
+console.log('> Ready.');
+
 rl.on('line', (input) => { // When a message is received:
 
 	// try to initialize the db on every request if it's not already
@@ -97,7 +99,7 @@ rl.on('line', (input) => { // When a message is received:
 		initDb(function(err){});
 	}
 	
-	console.log(`Received: ${input}`);
+	console.log(`> Received: ${input}`);
 	
 	
 	
@@ -147,9 +149,11 @@ rl.on('line', (input) => { // When a message is received:
 	
 	try {
 		 command.execute(input, args, db, aborts);
+		 console.log('> Ready.');
 	}
 	catch (error) {
 		console.error(error);
-		console.log('there was an error trying to execute that command!');
+		console.log('There was an error trying to execute that command!');
+		console.log('> Ready.');
 	}
 });

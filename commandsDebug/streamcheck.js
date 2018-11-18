@@ -6,6 +6,7 @@ module.exports = {
 	aliases: ['tw', 'stream'],
 	cooldown: 5,
     description: 'Checks if the username is streaming on Twitch.',
+    usage: '__channelname__',
 	execute(msg, args) {
 		if (args.length == 1)
 		  {

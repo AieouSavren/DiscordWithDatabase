@@ -3,6 +3,7 @@ module.exports = {
 	aliases: [],
 	cooldown: 5,
     description: 'Time for a blessing!',
+    usage: '[adjective] [species] ...',
     execute(msg, args) {
 		var InflatableTypes = new Array ();
 		InflatableTypes[0] = " parade balloon";
@@ -20,7 +21,7 @@ module.exports = {
 		Species[6] = "renamon";
 		Species[7] = "guilmon";
 		
-
+		var author = msg.author; 
 		  var i = Math.floor(InflatableTypes.length*Math.random())
 		  var i2 = Math.floor(Species.length*Math.random())
 		  var returnmessage = "";

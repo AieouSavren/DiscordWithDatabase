@@ -9,7 +9,7 @@ module.exports = {
     execute(msg, args, db) {
 		 var author = msg.author; 
 		  var num = 0;
-		   var returnInflatabeType = "";
+		   var returnInflatableType = "";
 		   var returnSpecies = "";
 		   var returnmessage = "";
 		  
@@ -31,9 +31,9 @@ module.exports = {
 			  
 			    for(i1 = 0; i1<InflatableTypes.length-1;i1++)
 				  {
-				  returnInflatabeType += InflatableTypes[i1] + ' ';
+				  returnInflatableType += InflatableTypes[i1] + ' ';
 				  }
-				  returnInflatabeType += InflatableTypes[InflatableTypes.length-1];
+				  returnInflatableType += InflatableTypes[InflatableTypes.length-1];
 				  
 				  
 				for(i2 = 0; i2<Species.length-1;i2++)
@@ -43,7 +43,7 @@ module.exports = {
 				  returnSpecies += Species[Species.length-1];
 			  
 				if (!db) {
-				 console.log('SAI cannot remember to bless cuties with a "' + returnInflatabeType + ' ' + returnSpecies + '" transformation right now.' ); 
+				 console.log('SAI cannot remember to bless cuties with a "' + returnInflatableType + ' ' + returnSpecies + '" transformation right now.' ); 
 				return;
 			  }
 			  if (db) {
@@ -75,7 +75,7 @@ module.exports = {
 						
 					});
 					
-					console.log('SAI can now bless cuties with a "' + returnInflatabeType + ' ' + returnSpecies + '" transformation!' ); 
+					console.log('SAI can now bless cuties with a "' + returnInflatableType + ' ' + returnSpecies + '" transformation!' ); 
 
 					
 					}

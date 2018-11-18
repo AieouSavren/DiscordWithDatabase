@@ -3,6 +3,7 @@ module.exports = {
 	aliases: ['rolls'],
 	cooldown: 5,
     description: 'Let\'s roll some dice!',
+    usage: '[number of dice]d[number of sides]',
     execute(msg, args, db, abort) {
        var author = msg.author; 
 	   

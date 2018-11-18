@@ -187,7 +187,7 @@ client.on("message", async msg => {
 	}
 	catch (error) {
 		console.error(error);
-		msg.reply('there was an error trying to execute that command!');
+		msg.reply('There was an error trying to execute that command!');
 	}
 	
 	//Close the DB... we're async... so this might create a race condition... hopefully a defult time out will handle it. 
