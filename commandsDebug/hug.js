@@ -1,4 +1,4 @@
-  var autoIncrement = require("mongodb-autoincrement");
+var autoIncrement = require("mongodb-autoincrement");
 var HugAdverbs = new Array ();
 HugAdverbs[0] = "firmly";
 HugAdverbs[1] = "tightly";
@@ -16,6 +16,7 @@ module.exports = {
 	aliases: ['hugs'],
 	cooldown: 5,
     description: 'You could use a hug!',
+    usage: '[adverb]'
     execute(msg, args, db) {
 		  var author = msg.author; 
 		  var num = 0;
