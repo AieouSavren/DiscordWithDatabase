@@ -5,7 +5,7 @@ module.exports = {
     name: 'twitch',
 	aliases: ['tw', 'stream'],
 	cooldown: 5,
-    description: 'Checks if the username is streaming on twitch',
+    description: 'Checks if the username is streaming on Twitch.',
 	execute(msg, args) {
 		if (args.length == 1)
 		  {
@@ -16,7 +16,7 @@ module.exports = {
 		  }
 		  else
 		  {
-			  msg.reply('Please enter the twitch channel name (as it appears in the url e.g. edmazing ...or someone who actually streams a lot...)');
+			  msg.reply('Please enter the Twitch channel name (as it appears in the url e.g. edmazing... or someone who actually streams a lot...)');
 		  }
 		return;
 	},

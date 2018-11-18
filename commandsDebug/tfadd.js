@@ -1,4 +1,4 @@
-  var autoIncrement = require("mongodb-autoincrement");
+var autoIncrement = require("mongodb-autoincrement");
 
 
 module.exports = {
@@ -14,7 +14,7 @@ module.exports = {
 		   var returnmessage = "";
 		  
 		  if (!args.length || args.length-1 >= 2) {
-			return console.log("Add an transformation to SAI's database of transformations! e.g. big_balloonie bunny_cutie lets anyone be a big balloonie or a cute bunny");
+			return console.log("Add an transformation to SAI's database of transformations! e.g. big_balloonie bunny_cutie lets anyone be a big balloonie or a cute bunny.");
 			
 			//maybe pm a list of current adverbs o3o? It could be a very very long list... 
 		  } 
@@ -43,7 +43,7 @@ module.exports = {
 				  returnSpecies += Species[Species.length-1];
 			  
 				if (!db) {
-				 console.log('SAI cannot rember to bless cuties with a "' + returnInflatabeType + ' ' + returnSpecies + '" transformation right now.' ); 
+				 console.log('SAI cannot remember to bless cuties with a "' + returnInflatabeType + ' ' + returnSpecies + '" transformation right now.' ); 
 				return;
 			  }
 			  if (db) {

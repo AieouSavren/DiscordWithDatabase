@@ -26,7 +26,7 @@ module.exports = {
 		  var returnmessage = "";
 		   
 		   //blue guilmon fix.
-		  if(msg.author.tag.toString() == "Cirus Kel#9823" && i2 == 7)
+		  if(msg.author.tag.toString() == "Curus Keel#9823" && i2 == 7)
 		  {
 			
 				while(i2 = 7)

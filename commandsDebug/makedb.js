@@ -1,10 +1,10 @@
-  var autoIncrement = require("mongodb-autoincrement");
+var autoIncrement = require("mongodb-autoincrement");
 
 module.exports = {
     name: 'makedatabase',
 	aliases: ['db', 'setup', 'makedb'],
 	cooldown: 5,
-    description: 'builds a database! Be amazed be very amazed.',
+    description: 'Builds a database! Be amazed, be very amazed.',
     execute(msg, args, db) {
         //console.log('working...');
 		

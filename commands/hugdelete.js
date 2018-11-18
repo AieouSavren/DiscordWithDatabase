@@ -1,4 +1,4 @@
-  var autoIncrement = require("mongodb-autoincrement");
+var autoIncrement = require("mongodb-autoincrement");
 var HugAdverbs = new Array ();
 HugAdverbs[0] = "firmly";
 HugAdverbs[1] = "tightly";
@@ -51,7 +51,7 @@ module.exports = {
 							console.log('Something went wrong... maybe that was not an option?');
 							return; //dont sort or change the count if we couldnt remove an element
 							}
-							 msg.channel.send('Yeah ' + returnmessage + ' was not a good way to hug someone.');
+							 msg.channel.send('Yeah, ' + returnmessage + ' was not a good way to hug someone.');
 						});
 						  
 					var query = { "_id": "hugs"}	  

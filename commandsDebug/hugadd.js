@@ -1,4 +1,4 @@
-  var autoIncrement = require("mongodb-autoincrement");
+var autoIncrement = require("mongodb-autoincrement");
 
 
 module.exports = {
@@ -27,7 +27,7 @@ module.exports = {
 				  
 				  returnmessage += args[args.length-1];
 				   
-				   console.log('SAI cannot rember to hug "' + returnmessage + '" right now.' ); 
+				   console.log('SAI cannot remember to hug "' + returnmessage + '" right now.' ); 
 				return;
 			  }
 			  if (db) {

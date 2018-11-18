@@ -1,10 +1,10 @@
-  var autoIncrement = require("mongodb-autoincrement");
+var autoIncrement = require("mongodb-autoincrement");
 
 module.exports = {
     name: 'makedatabase',
 	aliases: ['db', 'setup', 'makedb'],
 	cooldown: 5,
-    description: 'builds a database! Be amazed be very amazed.',
+    description: 'Builds a database! Be amazed, be very amazed.',
     execute(msg, args, db) {
         //console.log('working...');
 		if(!msg.member.roles.some(r=>["Administrator", "Moderator"].includes(r.name)) )
@@ -20,7 +20,7 @@ module.exports = {
 		  }
 		  if (db) {
 			  //todo add a check if this was already run
-			  //setup the auto incramenter
+			  //setup the auto incrementer
 				try {
 					
                 autoIncrement.getNextSequence(db, 'hugs', function (err, autoIndex) {

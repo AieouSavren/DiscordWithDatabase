@@ -2,13 +2,13 @@ module.exports = {
     name: 'roll',
 	aliases: ['rolls'],
 	cooldown: 5,
-    description: 'Lets roll some dice!',
+    description: 'Let\'s roll some dice!',
     execute(msg, args, db, abort) {
        var author = msg.author; 
 	   
 	   if(!args.length)
 	   {
-		    console.log('no args expecting the command in the format of !roll 1d20');
+		    console.log('No args provided. Expecting the command in the format of !roll 1d20');
 	   }
 	   else
 	   {
@@ -34,7 +34,7 @@ module.exports = {
 			   }
 			   else
 			   {
-				   console.log('didnt split expecting the command in the format of !roll 1d20');
+				   console.log('Didn\'t split properly. Expecting the command in the format of !roll 1d20');
 			   }
 			   
 			   
@@ -42,7 +42,7 @@ module.exports = {
 		   }
 		   else
 		   {
-			   console.log('expecting the command in the format of !roll 1d20');
+			   console.log('Expecting the command in the format of !roll 1d20');
 		   }
 		}
 	

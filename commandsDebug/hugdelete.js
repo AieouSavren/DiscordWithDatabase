@@ -1,4 +1,4 @@
-  var autoIncrement = require("mongodb-autoincrement");
+var autoIncrement = require("mongodb-autoincrement");
 
 
 module.exports = {
@@ -40,7 +40,7 @@ module.exports = {
 							console.log('Something went wrong... maybe that was not an option?');
 							return; //dont sort or change the count if we couldnt remove an element
 							}
-							 console.log('Yeah ' + returnmessage + ' was not a good way to hug someone.');
+							 console.log('Yeah, ' + returnmessage + ' was not a good way to hug someone.');
 						});
 						  
 					var query = { "_id": "hugs"}	  

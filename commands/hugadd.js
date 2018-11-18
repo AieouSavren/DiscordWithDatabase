@@ -1,4 +1,4 @@
-  var autoIncrement = require("mongodb-autoincrement");
+var autoIncrement = require("mongodb-autoincrement");
 var HugAdverbs = new Array ();
 HugAdverbs[0] = "firmly";
 HugAdverbs[1] = "tightly";
