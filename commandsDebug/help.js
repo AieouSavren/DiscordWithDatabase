@@ -25,6 +25,7 @@ module.exports = {
 			}
 
 			const command = commands.get(args[0]);
+			const prefix = process.env.PREFIX;
 
 			data.push(`**Name:** ${command.name}`);
 
