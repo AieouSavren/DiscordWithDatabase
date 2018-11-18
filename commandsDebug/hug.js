@@ -16,7 +16,7 @@ module.exports = {
 	aliases: ['hugs'],
 	cooldown: 5,
     description: 'You could use a hug!',
-    usage: '[adverb]'
+    usage: '[adverb]',
     execute(msg, args, db) {
 		  var author = msg.author; 
 		  var num = 0;
