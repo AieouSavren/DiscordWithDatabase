@@ -8,6 +8,7 @@ module.exports = {
 	aliases: ['commands'],
 	cooldown: 0,
     description: 'List all of my commands, or info about a specific command.',
+    usage: '[command]',
     execute(msg, args) {
 		const data = [];
 		
