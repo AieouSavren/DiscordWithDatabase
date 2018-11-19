@@ -22,7 +22,7 @@ module.exports = {
 			//consider adjusting the cool down?
 			
 			if (!commands.has(args[0])) {
-				return message.reply('that\'s not a valid command!');
+				return msg.channel.send(msg.author + ', that\'s not a valid command!');
 			}
 
 			const command = commands.get(args[0]);

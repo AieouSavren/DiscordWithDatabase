@@ -12,12 +12,12 @@ module.exports = {
 		  {
 			    checkStream(args[0], process.env.TWITCH, function(returncall)
 				{
-				msg.reply(util.format("", returncall));
+				msg.channel.send(msg.author + ', ' + util.format("", returncall));
 				});
 		  }
 		  else
 		  {
-			  msg.reply('Please enter the Twitch channel name (as it appears in the url e.g. edmazing... or someone who actually streams a lot...)');
+			  msg.channel.send(msg.author + ', please enter the Twitch channel name (as it appears in the url e.g. edmazing... or someone who actually streams a lot...)');
 		  }
 		return;
 	},
