@@ -7,6 +7,7 @@ commands = new Discord.Collection();
 const cooldowns = new Discord.Collection();
 var aborts = false;
 
+var example = require('./exampleFunction.js');
 const request = require('request');
 const util = require('util');
 
@@ -100,7 +101,7 @@ rl.on('line', (input) => { // When a message is received:
 	}
 	
 	console.log(`> Received: ${input}`);
-	
+	console.log(`> Time` + example.myDateTime());
 	
 	
 	const args = input.slice(process.env.PREFIX.length).trim().split(/ +/g);
