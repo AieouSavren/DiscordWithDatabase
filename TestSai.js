@@ -7,7 +7,7 @@ commands = new Discord.Collection();
 const cooldowns = new Discord.Collection();
 var aborts = false;
 
-var example = require('./exampleFunction.js');
+var example = require('./exampleFuction.js');
 const request = require('request');
 const util = require('util');
 
