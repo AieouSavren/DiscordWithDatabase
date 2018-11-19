@@ -1,3 +1,5 @@
+var example = require('../exampleFunction.js');
+
 module.exports = {
     name: 'fwoomp',
 	aliases: [],
@@ -5,7 +7,6 @@ module.exports = {
     description: 'Insta fwoomp.',
     usage: ' ',
     execute(msg, args) {
-          
-		 console.log('The Sai bot bops  with one of his tails, and makes them inflate into a giant balloon!');
+		 example.print('The Sai bot bops  with one of his tails, and makes them inflate into a giant balloon!');
     },
 };
