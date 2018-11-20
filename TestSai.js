@@ -130,6 +130,8 @@ function onNewInput(msg) {
 		initDb(function(err){});
 	}
 	
+	var input = msg;
+	
 	if (!DEBUGFLAG) {
 		// var input = msg.content; // won't actually work because msg.content is undefined in TestSai.js
 	}
