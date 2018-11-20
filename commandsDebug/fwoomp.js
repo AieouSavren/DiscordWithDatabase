@@ -1,4 +1,4 @@
-var example = require('../exampleFunction.js');
+var unifiedIO = require('../unifiedIO.js');
 
 module.exports = {
     name: 'fwoomp',
@@ -7,6 +7,6 @@ module.exports = {
     description: 'Insta fwoomp.',
     usage: ' ',
     execute(msg, args) {
-		 example.print('The Sai bot bops  with one of his tails, and makes them inflate into a giant balloon!');
+		 unifiedIO.print('The Sai bot bops ' + msg.author + ' with one of his tails, and makes them inflate into a giant balloon!',msg);
     },
 };

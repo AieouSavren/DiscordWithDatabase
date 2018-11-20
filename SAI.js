@@ -1,6 +1,7 @@
 //discord bot
 require('dotenv').config();
 const fs = require('fs');
+const readline = require('readline');
 const Discord = require('discord.js');
 commands = new Discord.Collection();
 const cooldowns = new Discord.Collection();
@@ -9,6 +10,9 @@ var aborts = false;
 const client = new Discord.Client();
 const request = require('request');
 const util = require('util');
+
+var unifiedIO = require('./unifiedIO.js');
+const DEBUGFLAG = (process.env.DEBUG_FLAG == "true");
 
 //  OpenShift sample Node application
 var express = require('express'),
@@ -94,21 +98,73 @@ client.on('ready', () => {
   client.user.setActivity({game: {name: "meditating", type: 0}});
 });
 
-client.on("message", async msg => {
+/* REMEMBER TO UNCOMMENT THIS
+const rl = readline.createInterface({
+	input: process.stdin,
+	output: process.stdout
+});
+
+// IGNORE THIS TOO FOR NOW
+// (part of input unification)
+
+rl.on('line', (receivedLine) => {
+	// If debug mode is ON, do the readline thing
+	if (DEBUGFLAG) {
+		onLineInput(receivedLine);
+	}
+});
+
+client.on("message", async message => {
+	// If debug mode is off, do the client thing
+	if (!DEBUGFLAG) {
+		onLineInput(message);
+	}
+}
+// don't forget about disabling client.login(process.env.TOKEN) too
+
+*/
+
+client.on("message", async message => {
+	onNewInput(message);
+});
+
+function onNewInput(msg) {
+	/* "msg" can be either a string or a Message object.
+		This function will be written to accept both,
+		using the "process.env.DEBUG_FLAG" to determine which
+		methods to use. */
+	
+	// try to initialize the db on every request if it's not already
+	// initialized.
+	if (!db) {
+		initDb(function(err){});
+	}
 	
 	if(msg.author.bot) return; //no bot to bot chatter
-	if (!msg.content.startsWith(process.env.PREFIX)) return;
 	
 	/*
+	// Example code to prevent non-administrator roles from using the bot
 	if(!msg.member.roles.some(r=>["Administrator", "Moderator"].includes(r.name)) )
 		return msg.reply("Sorry, you don't have permissions to use this!");
 	*/
 	
-	const args = msg.content.slice(process.env.PREFIX.length).trim().split(/ +/g);
-	const commandName = args.shift().toLowerCase();
-	// After these two statements, args consists of an array of arguments,
-	// minus the command that directly follows the prefix.
+	/* This bit makes the code which handles just the content of the message
+		agnostic to whether the message is actually a Message object or not. */
+	var input = msg;
+	if (!DEBUGFLAG) {
+		var input = msg.content;
+	}
+	// NOTE TO SELF: DO THE SAME FOR THINGS LIKE "AUTHOR". //
 	
+	if (!input.startsWith(process.env.PREFIX)) return;
+	
+	const args = input.slice(process.env.PREFIX.length).trim().split(/ +/g);
+	const commandName = args.shift().toLowerCase();
+	/* After these two statements, args consists of an array of arguments,
+		minus the command that directly follows the prefix. */
+	
+	
+	//  INPUT VALIDATION begins here. VV
 	
 	//the command is empty!
 	if(commandName == "")
@@ -132,7 +188,7 @@ client.on("message", async msg => {
 		If it evaluates to true, then our command has too many
 		prefixes at the beginning, and so we reject it.
 	*/
-	if (re.test(msg)) {
+	if (re.test(input)) {
 		return; //command is just prefixes, or too many prefixes. Return silently.
 	}
 	
@@ -142,11 +198,13 @@ client.on("message", async msg => {
 	//that's not a command name!
 	if (!command) 
 	{
-	msg.channel.send('The Sai bot meditates in an attempt to understand your command better.');		
-	return;
+		unifiedIO.print('The Sai bot meditates in an attempt to understand your command better.',msg);		
+		return;
 	}
 	
-	//every good command needs some memory... maybe? hmm could cut down on this by letting the commands pick and choose to init the db.
+	//  INPUT VALIDATION ends here. ^^
+	
+	// Some commands use the database. But calling initDb in a module will crash Sai, apparently. So we do it here.
 	if (!db) {
 		initDb(function(err){});
 	}
@@ -160,7 +218,7 @@ client.on("message", async msg => {
 	const now = Date.now();
 	const timestamps = cooldowns.get(command.name);
 	
-	//default cooldown is 3s
+	//default cooldown is 1s
 	const cooldownAmount = (command.cooldown || 1) * 1000;
 
 	if (!timestamps.has(msg.author.id)) {
@@ -174,26 +232,26 @@ client.on("message", async msg => {
 		//uh-oh you've gotta wait
 		if (now < expirationTime) {
 			const timeLeft = (expirationTime - now) / 1000;
-			return msg.reply(`please wait ${timeLeft.toFixed(1)} more second(s) before reusing the \`${command.name}\` command.`);
+			return unifiedIO.print(msg.author + `, please wait ${timeLeft.toFixed(1)} more second(s) before reusing the \`${command.name}\` command.`,msg);
 		}
 
 		timestamps.set(msg.author.id, now);
 		setTimeout(() => timestamps.delete(msg.author.id), cooldownAmount);
 	}
-	//coodowns done 
+	//cooldowns done 
 	
 	try {
 		 command.execute(msg, args, db, aborts);
 	}
 	catch (error) {
 		console.error(error);
-		msg.reply('There was an error trying to execute that command!');
+		unifiedIO.print(msg.author + ', there was an error trying to execute that command!', msg);
 	}
 	
 	//Close the DB... we're async... so this might create a race condition... hopefully a defult time out will handle it. 
 	//db.close();
-
-});
+	
+}
 
 // Create an event listener for new guild members
 client.on('guildMemberAdd', member => {
