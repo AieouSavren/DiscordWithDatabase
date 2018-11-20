@@ -7,9 +7,12 @@ commands = new Discord.Collection();
 const cooldowns = new Discord.Collection();
 var aborts = false;
 
-var example = require('./exampleFuction.js');
+
 const request = require('request');
 const util = require('util');
+
+var unifiedIO = require('./unifiedIO.js');
+const DEBUGFLAG = (process.env.DEBUG_FLAG == "true");
 
 //  OpenShift sample Node application
 var express = require('express'),
@@ -92,30 +95,62 @@ const rl = readline.createInterface({
 
 console.log('> Ready.');
 
-rl.on('line', (input) => { // When a message is received:
+rl.on('line', (receivedLine) => {
+	onNewInput(receivedLine);
+});
 
+/* IGNORE THIS
+
+rl.on('line', (receivedLine) => {
+	// If debug mode is ON, do the readline thing
+	if (DEBUGFLAG) {
+		onLineInput(receivedLine);
+	}
+});
+
+client.on("message", async message => {
+	// If debug mode is off, do the client thing
+	if (!DEBUGFLAG) {
+		onLineInput(message);
+	}
+}
+// don't forget about disabling client.login(process.env.TOKEN) too
+
+*/
+
+function onNewInput(msg) {
+	/* "msg" can be either a string or a Message object.
+		This function will be written to accept both,
+		using the "process.env.DEBUG_FLAG" to determine which
+		methods to use. */
+	
 	// try to initialize the db on every request if it's not already
 	// initialized.
 	if (!db) {
 		initDb(function(err){});
 	}
 	
-	console.log(`> Received: ${input}`);
-	console.log(`> Time` + example.myDateTime());
+	if (!DEBUGFLAG) {
+		// var input = msg.content; // won't actually work because msg.content is undefined in TestSai.js
+	}
 	
+	unifiedIO.debugLog(`> Received: ${msg}`);
+	
+	if (!input.startsWith(process.env.PREFIX)) return;
 	
 	const args = input.slice(process.env.PREFIX.length).trim().split(/ +/g);
 	const commandName = args.shift().toLowerCase();
-	// After these two statements, args consists of an array of arguments,
-	// minus the command that directly follows the prefix.
+	/* After these two statements, args consists of an array of arguments,
+		minus the command that directly follows the prefix. */
 	
+	
+	//  INPUT VALIDATION begins here. VV
 	
 	//the command is empty!
 	if(commandName == "")
 	{
 		return; //empty command. Return silently.
 	}
-	
 	
 	//the command has too many prefixes, or is ONLY prefixes!
 	/*
@@ -142,19 +177,21 @@ rl.on('line', (input) => { // When a message is received:
 	//that's not a command name!
 	if (!command) 
 	{
-		console.log('The Sai bot meditates in an attempt to understand your command better.');
+		unifiedIO.print('The Sai bot meditates in an attempt to understand your command better.',msg);
 		return;
 	}
+	
+	//  INPUT VALIDATION ends here. ^^
 	
 
 	
 	try {
 		 command.execute(input, args, db, aborts);
-		 console.log('> Ready.');
+		 unifiedIO.debugLog('> Ready.');
 	}
 	catch (error) {
 		console.error(error);
-		console.log('There was an error trying to execute that command!');
-		console.log('> Ready.');
+		unifiedIO.print(msg.author + ', there was an error trying to execute that command!');
+		unifiedIO.debugLog('> Ready.');
 	}
-});
+}

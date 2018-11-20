@@ -10,7 +10,7 @@ module.exports = {
         //console.log('working...');
 		if(!msg.member.roles.some(r=>["Administrator", "Moderator"].includes(r.name)) )
 		{
-		return msg.reply("Sorry, you don't have permissions to use this!");
+		return msg.channel.send(msg.author + " Sorry, you don't have permissions to use this!");
 		}
 		  // try to initialize the db on every request if it's not already
 		  // initialized.

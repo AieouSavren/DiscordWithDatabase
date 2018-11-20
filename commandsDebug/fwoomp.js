@@ -1,3 +1,5 @@
+var unifiedIO = require('../unifiedIO.js');
+
 module.exports = {
     name: 'fwoomp',
 	aliases: [],
@@ -5,7 +7,6 @@ module.exports = {
     description: 'Insta fwoomp.',
     usage: ' ',
     execute(msg, args) {
-          
-		 console.log('The Sai bot bops  with one of his tails, and makes them inflate into a giant balloon!');
+		 unifiedIO.print('The Sai bot bops ' + msg.author + ' with one of his tails, and makes them inflate into a giant balloon!',msg);
     },
 };
