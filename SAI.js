@@ -272,4 +272,6 @@ client.on('guildMemberRemove', member => {
 	channel.send(`${member} has left the server`);
 });
 
-client.login(process.env.TOKEN);
+if (!DEBUGFLAG) {
+	client.login(process.env.TOKEN);
+}
