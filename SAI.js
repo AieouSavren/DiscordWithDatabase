@@ -98,35 +98,28 @@ client.on('ready', () => {
   client.user.setActivity({game: {name: "meditating", type: 0}});
 });
 
-/* REMEMBER TO UNCOMMENT THIS
 const rl = readline.createInterface({
 	input: process.stdin,
 	output: process.stdout
 });
 
-// IGNORE THIS TOO FOR NOW
-// (part of input unification)
-
 rl.on('line', (receivedLine) => {
 	// If debug mode is ON, do the readline thing
 	if (DEBUGFLAG) {
-		onLineInput(receivedLine);
+		onNewInput(receivedLine);
 	}
 });
 
 client.on("message", async message => {
 	// If debug mode is off, do the client thing
 	if (!DEBUGFLAG) {
-		onLineInput(message);
+		onNewInput(message);
 	}
-}
+});
 // don't forget about disabling client.login(process.env.TOKEN) too
 
-*/
 
-client.on("message", async message => {
-	onNewInput(message);
-});
+
 
 function onNewInput(msg) {
 	/* "msg" can be either a string or a Message object.
@@ -140,7 +133,9 @@ function onNewInput(msg) {
 		initDb(function(err){});
 	}
 	
-	if(msg.author.bot) return; //no bot to bot chatter
+	if (!DEBUGFLAG) {
+		if (msg.author.bot) return; //no bot to bot chatter
+	}
 	
 	/*
 	// Example code to prevent non-administrator roles from using the bot
@@ -209,36 +204,40 @@ function onNewInput(msg) {
 		initDb(function(err){});
 	}
 	
-	//does our command have a cool down?
-	if (!cooldowns.has(command.name)) {
-		cooldowns.set(command.name, new Discord.Collection());
-	}
-
-	//what time is it
-	const now = Date.now();
-	const timestamps = cooldowns.get(command.name);
 	
-	//default cooldown is 1s
-	const cooldownAmount = (command.cooldown || 1) * 1000;
-
-	if (!timestamps.has(msg.author.id)) {
-		//okay you're fine to use the command
-		timestamps.set(msg.author.id, now);
-		setTimeout(() => timestamps.delete(msg.author.id), cooldownAmount);
-	}
-	else {
-		const expirationTime = timestamps.get(msg.author.id) + cooldownAmount;
-
-		//uh-oh you've gotta wait
-		if (now < expirationTime) {
-			const timeLeft = (expirationTime - now) / 1000;
-			return unifiedIO.print(msg.author + `, please wait ${timeLeft.toFixed(1)} more second(s) before reusing the \`${command.name}\` command.`,msg);
+	// Cooldown mechanics
+	if (!DEBUGFLAG) {
+		//does our command have a cool down?
+		if (!cooldowns.has(command.name)) {
+			cooldowns.set(command.name, new Discord.Collection());
 		}
 
-		timestamps.set(msg.author.id, now);
-		setTimeout(() => timestamps.delete(msg.author.id), cooldownAmount);
+		//what time is it
+		const now = Date.now();
+		const timestamps = cooldowns.get(command.name);
+	
+		//default cooldown is 1s
+		const cooldownAmount = (command.cooldown || 1) * 1000;
+
+		if (!timestamps.has(msg.author.id)) {
+			//okay you're fine to use the command
+			timestamps.set(msg.author.id, now);
+			setTimeout(() => timestamps.delete(msg.author.id), cooldownAmount);
+		}
+		else {
+			const expirationTime = timestamps.get(msg.author.id) + cooldownAmount;
+
+			//uh-oh you've gotta wait
+			if (now < expirationTime) {
+				const timeLeft = (expirationTime - now) / 1000;
+				return unifiedIO.print(msg.author + `, please wait ${timeLeft.toFixed(1)} more second(s) before reusing the \`${command.name}\` command.`,msg);
+			}
+
+			timestamps.set(msg.author.id, now);
+			setTimeout(() => timestamps.delete(msg.author.id), cooldownAmount);
+		}
+		//cooldowns done 
 	}
-	//cooldowns done 
 	
 	try {
 		 command.execute(msg, args, db, aborts);
