@@ -1,3 +1,5 @@
+var unifiedIO = require('../unifiedIO.js');
+
 var autoIncrement = require("mongodb-autoincrement");
 
 module.exports = {

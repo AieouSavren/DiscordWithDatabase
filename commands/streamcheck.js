@@ -2,50 +2,45 @@ var request = require('request');
 const util = require('util');
 
 module.exports = {
-    name: 'twitch',
+	name: 'twitch',
 	aliases: ['tw', 'stream'],
 	cooldown: 5,
-    description: 'Checks if the username is streaming on Twitch.',
-    usage: '__channelname__',
+	description: 'Checks if the username is streaming on Twitch.',
+	usage: '__channelname__',
 	execute(msg, args) {
-		if (args.length == 1)
-		  {
-			    checkStream(args[0], process.env.TWITCH, function(returncall)
-				{
+		if (args.length == 1) {
+			checkStream(args[0], process.env.TWITCH, function(returncall) {
 				msg.channel.send(msg.author + ', ' + util.format("", returncall));
-				});
-		  }
-		  else
-		  {
-			  msg.channel.send(msg.author + ', please enter the Twitch channel name (as it appears in the url e.g. edmazing... or someone who actually streams a lot...)');
-		  }
+			});
+		} else {
+			msg.channel.send(msg.author + ', please enter the Twitch channel name (as it appears in the url e.g. edmazing... or someone who actually streams a lot...)');
+		}
 		return;
 	},
 };
 
-		
+
+
 function checkStream(channelName, TwitchToken, callback) {
-	request('https://api.twitch.tv/kraken/streams/' + channelName + '?client_id=' + TwitchToken + '', function (error, response, body) {
-		 if (!error && response.statusCode == 200) {
+	request('https://api.twitch.tv/kraken/streams/' + channelName + '?client_id=' + TwitchToken + '', function (error, response, body)
+	{
+		if (!error && response.statusCode == 200) {
 			var jsonArr = JSON.parse(body.toString());
-				//console.log(jsonArr);
-					
-				if(jsonArr['stream'] != null)
-				{
-					//console.log(jsonArr['stream']);
+			//console.log(jsonArr);
+			
+			if(jsonArr['stream'] != null) {
+				//console.log(jsonArr['stream']);
 				return callback('' + channelName + ' is streaming!');
-				}
-					
-
-
-				//console.log("streaming?:" + stream);
-				return callback('' + channelName + ' is Not active');
-			  }
-			  else
-			  {
-				  return callback("error:" + error + "Server Response"  + response.statusCode + '');
-				 //console.log(error);
-				 //console.log(response.statusCode);
-			  }
+			}
+			
+			//console.log("streaming?:" + stream);
+			return callback('' + channelName + ' is Not active');
+		} else {
+			return callback("error: " + error + " Server Response: "  + response.statusCode + '');
+			//NOTE: ADD SOMEWHERE TO CHECK IF YOU ACTUALLY HAVE A VALID TWITCH TOKEN
+			// AND REPORT TO THE USER WHEN YOU DO NOT (code 400?)
+			//console.log(error);
+			//console.log(response.statusCode);
+		}
 	})
 }

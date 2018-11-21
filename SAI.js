@@ -14,18 +14,20 @@ const util = require('util');
 var unifiedIO = require('./unifiedIO.js');
 const DEBUGFLAG = (process.env.DEBUG_FLAG == "true");
 
-//  OpenShift sample Node application
+//  HTTP HANDLING begins here.
 var express = require('express'),
 	app     = express(),
 	morgan  = require('morgan');
 
-Object.assign = require('object-assign');
+Object.assign = require('object-assign'); // What is this needed for?
 
-app.engine('html', require('ejs').renderFile);
+app.engine('html', require('ejs').renderFile); 
 app.use(morgan('combined'));
-//derp
-// NOTE: What exactly does this do? Does it need a comment?
-// Spoilers it does. (But what should it say?)
+// Every request SHOULD be logged in Apache combined format...
+// ...but as far as I can tell, express actually is not being
+// used to handle HTTP requests. Derp indeed.
+
+//  HTTP HANDLING ends here. ^^
 
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 

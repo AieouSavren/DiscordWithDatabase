@@ -3,6 +3,8 @@ const Discord = require('discord.js');
 //be sure to change const command = require(`./commands/${file}`); to const command = require(`./${file}`);
 //or the proper directory. It will ignore the current command that way. Ummm it's a feature so we made it global in scope to fix that.
 
+var unifiedIO = require('../unifiedIO.js');
+
 module.exports = {
     name: 'help',
 	aliases: ['commands'],
