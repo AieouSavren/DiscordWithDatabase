@@ -70,7 +70,6 @@ var initDb = function(callback) {
 	});
 };
 
-
 initDb(function(err){
 	console.log('Error connecting to Mongo. Message:\n'+err);
 });
@@ -193,7 +192,7 @@ function onNewInput(msg) {
 	}
 	catch (error) {
 		console.error(error);
-		unifiedIO.print(msg.author + ', there was an error trying to execute that command!');
+		unifiedIO.print(msg.author + ', there was an error trying to execute that command!', msg);
 		unifiedIO.debugLog('> Ready.');
 	}
 }

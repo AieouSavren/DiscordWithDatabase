@@ -16,71 +16,73 @@ const DEBUGFLAG = (process.env.DEBUG_FLAG == "true");
 
 //  OpenShift sample Node application
 var express = require('express'),
-    app     = express(),
-    morgan  = require('morgan');
-    
-Object.assign=require('object-assign')
+	app     = express(),
+	morgan  = require('morgan');
+
+Object.assign = require('object-assign');
 
 app.engine('html', require('ejs').renderFile);
-app.use(morgan('combined'))
+app.use(morgan('combined'));
 //derp
+// NOTE: What exactly does this do? Does it need a comment?
+// Spoilers it does. (But what should it say?)
 
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
 for (const file of commandFiles) {
-    const command = require(`./commands/${file}`);
-
-    // set a new item in the Collection
-    // with the key as the command name and the value as the exported module
-   commands.set(command.name, command);
+	const command = require(`./commands/${file}`);
+	
+	// set a new item in the Collection
+	// with the key as the command name and the value as the exported module
+	commands.set(command.name, command);
 }
 
-//database
+// DATABASE STUFF begins here.
  
 var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 27017,
-    ip   = process.env.IP   || process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1',
-    mongoURL = process.env.OPENSHIFT_MONGODB_DB_URL || process.env.MONGO_URL,
-    mongoURLLabel = "";
+	ip   = process.env.IP   || process.env.OPENSHIFT_NODEJS_IP   || '127.0.0.1',
+	mongoURL = process.env.OPENSHIFT_MONGODB_DB_URL || process.env.MONGO_URL,
+	mongoURLLabel = "";
 
 if (mongoURL == null && process.env.DATABASE_SERVICE_NAME) {
-  var mongoServiceName = process.env.DATABASE_SERVICE_NAME.toUpperCase(),
-      mongoHost = process.env[mongoServiceName + '_SERVICE_HOST'],
-      mongoPort = process.env[mongoServiceName + '_SERVICE_PORT'],
-      mongoDatabase = process.env[mongoServiceName + '_DATABASE'],
-      mongoPassword = process.env[mongoServiceName + '_PASSWORD']
-      mongoUser = process.env[mongoServiceName + '_USER'];
+	var mongoServiceName = process.env.DATABASE_SERVICE_NAME.toUpperCase(),
+		mongoHost = process.env[mongoServiceName + '_SERVICE_HOST'],
+		mongoPort = process.env[mongoServiceName + '_SERVICE_PORT'],
+		mongoDatabase = process.env[mongoServiceName + '_DATABASE'],
+		mongoPassword = process.env[mongoServiceName + '_PASSWORD']
+		mongoUser = process.env[mongoServiceName + '_USER'];
 
-  if (mongoHost && mongoPort && mongoDatabase) {
-    mongoURLLabel = mongoURL = 'mongodb://';
-    if (mongoUser && mongoPassword) {
-      mongoURL += mongoUser + ':' + mongoPassword + '@';
-    }
-    // Provide UI label that excludes user id and pw
-    mongoURLLabel += mongoHost + ':' + mongoPort + '/' + mongoDatabase;
-    mongoURL += mongoHost + ':' +  mongoPort + '/' + mongoDatabase;
-
-  }
+	if (mongoHost && mongoPort && mongoDatabase) {
+		mongoURLLabel = mongoURL = 'mongodb://';
+		if (mongoUser && mongoPassword) {
+			mongoURL += mongoUser + ':' + mongoPassword + '@';
+		}
+		
+		// Provide UI label that excludes user id and pw
+		mongoURLLabel += mongoHost + ':' + mongoPort + '/' + mongoDatabase;
+		mongoURL += mongoHost + ':' +  mongoPort + '/' + mongoDatabase;
+	}
 }
 var db = null,
-    dbDetails = new Object();
+	dbDetails = new Object();
 
 var initDb = function(callback) {
 	if (mongoURL == null) return;
-
+	
 	var mongodb = require('mongodb');
 	if (mongodb == null) return;
-
+	
 	mongodb.connect(mongoURL, function(err, conn) {
 		if (err) {
 			callback(err);
 			return;
 		}
-
+		
 		db = conn;
 		dbDetails.databaseName = db.databaseName; //there's a defined default?... apparently admin on unsecure systems. 
 		dbDetails.url = mongoURLLabel;
 		dbDetails.type = 'MongoDB';
-
+		
 		console.log('Connected to MongoDB at: %s', mongoURL);
 	});
 };
@@ -89,7 +91,7 @@ initDb(function(err){
 	console.log('Error connecting to Mongo. Message:\n'+err);
 });
 
-//database functions above
+//  DATABASE STUFF ends here. ^^
 
 
 
@@ -149,7 +151,7 @@ function onNewInput(msg) {
 	if (!DEBUGFLAG) {
 		var input = msg.content;
 	}
-	// NOTE TO SELF: DO THE SAME FOR THINGS LIKE "AUTHOR". //
+	// NOTE TO SELF: DO THE SAME FOR THINGS LIKE "AUTHOR". i.e., provide a unified value for author so that things that use it don't complain about msg not having that property.  //
 	
 	if (!input.startsWith(process.env.PREFIX)) return;
 	
@@ -159,7 +161,7 @@ function onNewInput(msg) {
 		minus the command that directly follows the prefix. */
 	
 	
-	//  INPUT VALIDATION begins here. VV
+	//  INPUT VALIDATION begins here.
 	
 	//the command is empty!
 	if(commandName == "")
@@ -193,7 +195,7 @@ function onNewInput(msg) {
 	//that's not a command name!
 	if (!command) 
 	{
-		unifiedIO.print('The Sai bot meditates in an attempt to understand your command better.',msg);		
+		unifiedIO.print('The Sai bot meditates in an attempt to understand your command better.', msg);
 		return;
 	}
 	
@@ -255,6 +257,7 @@ function onNewInput(msg) {
 // Create an event listener for new guild members
 client.on('guildMemberAdd', member => {
 	// Send the message to a designated channel on a server:
+	// NOTE: Delegate stuff like this to a config file?
 	const channel = member.guild.channels.find('name', 'shrine-artificial-intellegence');
 	// Do nothing if the channel wasn't found on this server
 	if (!channel) return;
@@ -265,6 +268,7 @@ client.on('guildMemberAdd', member => {
 // Create an event listener for leaving guild members
 client.on('guildMemberRemove', member => {
 	// Send the message to a designated channel on a server:
+	// NOTE: Delegate stuff like this to a config file?
 	const channel = member.guild.channels.find('name', 'shrine-artificial-intellegence');
 	// Do nothing if the channel wasn't found on this server
 	if (!channel) return;
