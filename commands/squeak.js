@@ -7,6 +7,6 @@ module.exports = {
 	description: 'Squeak!',
 	usage: ' ',
 	execute(msg, args) {
-		msg.channel.send('The Sai bot opens his mouth and emits a mighty **squeak!**');
+		unifiedIO.print('The Sai bot opens his mouth and emits a mighty **squeak!**',msg);
 	},
 };

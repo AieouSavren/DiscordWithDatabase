@@ -27,7 +27,7 @@ module.exports = {
 		if (!args.length) {
 			if (!db) {
 				var rand = Math.floor(Math.random() * HugAdverbs.length); 
-				 msg.channel.send('The Sai bot ' + HugAdverbs[rand] + ' hugs ' +  author + '!');
+				unifiedIO.print('The Sai bot ' + HugAdverbs[rand] + ' hugs ' +  author + '!',msg);
 			}
 			if (db) {
 				var query = { _id: "hugs" };
@@ -44,7 +44,7 @@ module.exports = {
 					var query = { _id: i };
 					db.collection("hugs").find(query, {_id: 0, adverbs: 1}).toArray(function(err, result) {
 						if (err) throw err;
-						msg.channel.send('The Sai bot ' + result[0].adverbs + ' hugs ' +  author + '!');
+						unifiedIO.print('The Sai bot ' + result[0].adverbs + ' hugs ' +  author + '!',msg);
 					});
 				});
 			}
@@ -53,8 +53,8 @@ module.exports = {
 			{
 				returnmessage += args[i3] + ' ';
 			}
-				
-			msg.channel.send('The Sai bot ' + returnmessage + 'hugs ' +  author + '!');
+			
+			unifiedIO.print('The Sai bot ' + returnmessage + 'hugs ' +  author + '!',msg);
 			
 		}
 		

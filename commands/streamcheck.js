@@ -1,6 +1,8 @@
 var request = require('request');
 const util = require('util');
 
+var unifiedIO = require('../unifiedIO.js');
+
 module.exports = {
 	name: 'twitch',
 	aliases: ['tw', 'stream'],
@@ -10,10 +12,12 @@ module.exports = {
 	execute(msg, args) {
 		if (args.length == 1) {
 			checkStream(args[0], process.env.TWITCH, function(returncall) {
-				msg.channel.send(msg.author + ', ' + util.format("", returncall));
+				unifiedIO.print(msg.author + ', ' + util.format("", returncall),msg);
+				// The usage of "util.format()" may be unnecessary here.
+				// AFAIK, it is being used to simply concatenate a string.
 			});
 		} else {
-			msg.channel.send(msg.author + ', please enter the Twitch channel name (as it appears in the url e.g. edmazing... or someone who actually streams a lot...)');
+			unifiedIO.print(msg.author + ', please enter the Twitch channel name (as it appears in the url e.g. edmazing... or someone who actually streams a lot...)',msg);
 		}
 		return;
 	},

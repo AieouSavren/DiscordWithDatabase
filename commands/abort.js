@@ -9,8 +9,8 @@ module.exports = {
 	execute(msg, args, db, abort) {
 		abort = true;
 		if (abort)
-			msg.channel.send('The Sai bot stops doing stuff.');
+			unifiedIO.print('The Sai bot stops doing stuff.',msg);
 		else
-			msg.channel.send('The Sai bot starts doing stuff.');
+			unifiedIO.print('The Sai bot starts doing stuff.',msg);
 	},
 };

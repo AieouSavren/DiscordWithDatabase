@@ -197,7 +197,7 @@ function onNewInput(msg) {
 	//that's not a command name!
 	if (!command) 
 	{
-		unifiedIO.print('The Sai bot meditates in an attempt to understand your command better.', msg);
+		unifiedIO.print('The Sai bot meditates in an attempt to understand your command better.',msg);
 		return;
 	}
 	
@@ -248,7 +248,7 @@ function onNewInput(msg) {
 	}
 	catch (error) {
 		console.error(error);
-		unifiedIO.print(msg.author + ', there was an error trying to execute that command!', msg);
+		unifiedIO.print(msg.author + ', there was an error trying to execute that command!',msg);
 	}
 	
 	//Close the DB... we're async... so this might create a race condition... hopefully a defult time out will handle it. 

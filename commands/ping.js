@@ -7,6 +7,6 @@ module.exports = {
 	description: 'Ping!',
 	usage: ' ',
 	execute(msg, args) {
-		msg.channel.send('Pong.');
+		unifiedIO.print('Pong.',msg);
 	},
 };

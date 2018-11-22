@@ -11,7 +11,7 @@ module.exports = {
 		var author = msg.author;
 		
 		if (!args.length) {
-			msg.channel.send('No args provided. Expecting the command in the format of !roll 1d20');
+			unifiedIO.print('No args provided. Expecting the command in the format of !roll 1d20',msg);
 		} else {
 			if (args[0].includes("d")) {
 				var rolls = args[0].split("d");
@@ -30,20 +30,21 @@ module.exports = {
 						}
 						var returnnum = Math.floor(rolls[1] * Math.random());
 						returnnum = returnnum + 1;
-						msg.channel.send('roll: ' + returnnum);
+						
+						unifiedIO.print('roll: ' + returnnum,msg);
 					}
 				} else {
-					msg.channel.send('Expecting the command in the format of !roll 1d20');
+					unifiedIO.print('Expecting the command in the format of !roll 1d20',msg);
 				}
 				
 				
 				//rolled...
 			} else {
-				msg.channel.send('Expecting the command in the format of !roll 1d20');
+				unifiedIO.print('Expecting the command in the format of !roll 1d20',msg);
 			}
 		}
-
-
+		
+		
 		return;
 	},
 };
