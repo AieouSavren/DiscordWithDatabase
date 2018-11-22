@@ -1,12 +1,5 @@
 require('dotenv').config();
 
-exports.myDateTime = function () {
-    return Date();
-};
-
-// DO NOT USE THESE FUNCTIONS YET
-// THE FUNCTIONS BELOW, DO NOT USE THEM YET
-
 exports.debugLog = function (str) {
 	/* Used for things you want to output in debug mode
 		but not in normal mode, like "> Received". */
@@ -24,12 +17,13 @@ exports.alwaysLog = function (str) {
 };
 
 exports.print = function (str,msg) {
-    /* Note that "msg" is a DISCORD.JS MESSAGE OBJECT!
-        It is used to retrieve the proper Discord
-        channel to send "str" onto. */
-    if (process.env.DEBUG_FLAG == "true") {
-        console.log(str);
-    } else {
-        msg.channel.send(str);
-    }
+	/* Note that "msg" is a DISCORD.JS MESSAGE OBJECT!
+		It is used to retrieve the proper Discord
+		channel to send "str" onto. */
+	// Use like `unifiedIO.print("bla bla",msg)`.
+	if (process.env.DEBUG_FLAG == "true") {
+		console.log(str);
+	} else {
+		msg.channel.send(str);
+	}
 };
