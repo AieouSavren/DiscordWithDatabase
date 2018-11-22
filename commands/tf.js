@@ -28,19 +28,22 @@ module.exports = {
 		var i2 = Math.floor(Species.length*Math.random())
 		var returnmessage = "";
 		
-		//blue guilmon fix.
-		if(msg.author.tag.toString() == "Curus Keel#9823" && i2 == 7)
-		{
-			
-			while(i2 = 7)
-			{
-				i2 = Math.floor(Species.length*Math.random());
-			}
-		}
 		
-		if(msg.member.roles.some(r=>["LOVED GOD OF INFLATABLES"].includes(r.name)))
-		{
-			i2 = 2;
+		if (process.env.DEBUG_FLAG != "true") {
+			//blue guilmon fix.
+			if(msg.author.tag.toString() == "Curus Keel#9823" && i2 == 7)
+			{
+			
+				while(i2 = 7)
+				{
+					i2 = Math.floor(Species.length*Math.random());
+				}
+			}
+		
+			if(msg.member.roles.some(r=>["LOVED GOD OF INFLATABLES"].includes(r.name)))
+			{
+				i2 = 2;
+			}
 		}
 		
 		

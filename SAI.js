@@ -95,7 +95,7 @@ initDb(function(err){
 
 //  DATABASE STUFF ends here. ^^
 
-
+unifiedIO.debugLog("==== Debug mode on. ====");
 
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
