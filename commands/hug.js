@@ -14,54 +14,49 @@ HugAdverbs[8] = "zealously";
 HugAdverbs[9] = "ferociously";
 
 module.exports = {
-    name: 'hug',
+	name: 'hug',
 	aliases: ['hugs'],
 	cooldown: 5,
-    description: 'You could use a hug!',
-    usage: '[adverb] ...',
-    execute(msg, args, db) {
-		 var author = msg.author; 
-		  var num = 0;
-		   var returnmessage = "";
-		  
-		  if (!args.length) {
-			  if (!db) {
+	description: 'You could use a hug!',
+	usage: '[adverb] ...',
+	execute(msg, args, db) {
+		var author = msg.author; 
+		var num = 0;
+		var returnmessage = "";
+		
+		if (!args.length) {
+			if (!db) {
 				var rand = Math.floor(Math.random() * HugAdverbs.length); 
 				 msg.channel.send('The Sai bot ' + HugAdverbs[rand] + ' hugs ' +  author + '!');
-			  }
-			  if (db) {
+			}
+			if (db) {
 				var query = { _id: "hugs" };
-			   db.collection("counters").find(query, {_id: 0, seq: 1}).toArray(function(err, result) {
-				if (err) throw err;
-				num = result[0].seq;
-
+				db.collection("counters").find(query, {_id: 0, seq: 1}).toArray(function(err, result) {
+					if (err) throw err;
+					num = result[0].seq;
+					
+					
+					
+					var i = Math.floor(num*Math.random()); //0 to n-1
+					i += 1; //1 to max
+					
+					
+					var query = { _id: i };
+					db.collection("hugs").find(query, {_id: 0, adverbs: 1}).toArray(function(err, result) {
+						if (err) throw err;
+						msg.channel.send('The Sai bot ' + result[0].adverbs + ' hugs ' +  author + '!');
+					});
+				});
+			}
+		} else {
+			for(i3 = 0; i3<args.length;i3++)
+			{
+				returnmessage += args[i3] + ' ';
+			}
 				
-				
-				var i = Math.floor(num*Math.random()); //0 to n-1
-				i += 1; //1 to max
-
-			  
-				var query = { _id: i };
-				db.collection("hugs").find(query, {_id: 0, adverbs: 1}).toArray(function(err, result) {
-				if (err) throw err;
-				 msg.channel.send('The Sai bot ' + result[0].adverbs + ' hugs ' +  author + '!');
-			  });
-				
-			  });
-			  }
-		  } 
-		  else
-		  {
-			 for(i3 = 0; i3<args.length;i3++)
-			  {
-				  returnmessage += args[i3] + ' ';
-			  }
-				  
-				  msg.channel.send('The Sai bot ' + returnmessage + 'hugs ' +  author + '!');
-			  
-		  }
-		  
-       
-		 
-    },
+			msg.channel.send('The Sai bot ' + returnmessage + 'hugs ' +  author + '!');
+			
+		}
+		
+	},
 };
