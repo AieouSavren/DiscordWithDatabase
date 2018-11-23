@@ -1,6 +1,8 @@
 var unifiedIO = require('../unifiedIO.js');
 
 var autoIncrement = require("mongodb-autoincrement");
+
+
 var HugAdverbs = new Array ();
 HugAdverbs[0] = "firmly";
 HugAdverbs[1] = "tightly";
@@ -17,17 +19,19 @@ module.exports = {
 	name: 'hugadd',
 	aliases: ['hugsadd' , 'addhug' , 'addhugs'],
 	cooldown: 5,
-	description: 'You could use more types of hugs!',
+	description: "Add an adverb to SAI's database of hugs!",
+	usage: '__adverb__',
 	execute(msg, args, db) {
 		var author = msg.author; 
 		var num = 0;
 		var returnmessage = "";
 		
 		if (!args.length) {
-			return msg.channel.send("Add an adverb to SAI's database of hugs!");
+			unifiedIO.print("Please give an adverb to add.",msg);
+			return;
 			
 			//maybe pm a list of current adverbs o3o? It could be a very very long list... 
-		} 
+		}
 		else
 		{
 			
@@ -37,10 +41,10 @@ module.exports = {
 				{
 					returnmessage += args[i3] + ' ';
 				}
-			
+				
 				returnmessage += args[args.length-1];
-			
-				msg.channel.send('SAI cannot remember to hug "' + returnmessage + '" right now.' ); 
+				
+				unifiedIO.print('SAI cannot remember to hug "' + returnmessage + '" right now. (No database)',msg); 
 				return;
 			}
 			
@@ -59,12 +63,12 @@ module.exports = {
 						var collection = db.collection('hugs');
 						collection.insert({ _id: autoIndex, adverbs: returnmessage });
 						
-						msg.channel.send('The Sai bot can now hug ' + returnmessage + '!');
+						unifiedIO.print('The Sai bot can now hug ' + returnmessage + '!',msg);
 						
 					});
 				} catch (err) {
 					console.log(err);
-					msg.channel.send('uh oh...');
+					unifiedIO.print('There was an error adding that to the database.');
 				}
 			
 			}

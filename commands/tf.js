@@ -31,7 +31,7 @@ module.exports = {
 		
 		if (process.env.DEBUG_FLAG != "true") {
 			//blue guilmon fix.
-			if(msg.author.tag.toString() == "Curus Keel#9823" && i2 == 7)
+			if(msg.author.tag == "Curus Keel#9823" && i2 == 7)
 			{
 			
 				while(i2 = 7)
@@ -39,8 +39,10 @@ module.exports = {
 					i2 = Math.floor(Species.length*Math.random());
 				}
 			}
-		
-			if(msg.member.roles.some(r=>["LOVED GOD OF INFLATABLES"].includes(r.name)))
+			
+			// Makes sure that Sai (the user) always gets a bunny tf >:3
+			// NOTE TO SELF: "some" is an function on arrays. It's exactly like Haskell "elem".
+			if(msg.member.roles.some(role => role.name.includes("LOVED GOD OF INFLATABLES")))
 			{
 				i2 = 2;
 			}
@@ -50,7 +52,7 @@ module.exports = {
 		// Actual output begins here.
 		// ISSUE NOTE: This code can currently output stuff like
 		// "Sai blesses [user] with a inflatable skunk transformation!"
-		// which is ungrammatical. Needs to be fixed eventually.
+		// which is ungrammatical. TODO: Needs to be fixed eventually.
 		if(!Array.isArray(args) || args.length === 0)
 		{
 			unifiedIO.print('Sai blesses ' + author + ' with a' + InflatableTypes[i] + ' ' + Species[i2] +  ' ' + 'transformation!',msg);

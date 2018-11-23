@@ -18,18 +18,19 @@ module.exports = {
 	aliases: ['deletehugs', 'deletehug', 'hugsdelete', 'hugdelete', 'hugremove'],
 	cooldown: 5,
 	description: 'You could use a hug!',
+	usage: '__adverb__',
 	execute(msg, args, db) {
 		var author = msg.author; 
 		var num = 0;
 		var returnmessage = "";
 		
 		if (!args.length) {
-			msg.channel.send('Give me an adverb to delete from the list...');
+			unifiedIO.print('Give me an adverb to delete from the list...',msg);
 		}
 		else
 		{
 			if (!db) {
-				msg.channel.send('SAI is very forgetful today.');
+				unifiedIO.print('SAI is very forgetful today.',msg);
 			}
 			if (db) {
 				
@@ -51,7 +52,7 @@ module.exports = {
 							console.log('Something went wrong... maybe that was not an option?');
 							return; //dont sort or change the count if we couldnt remove an element
 						}
-						msg.channel.send('Yeah, ' + returnmessage + ' was not a good way to hug someone.');
+						unifiedIO.print('Yeah, ' + returnmessage + ' was not a good way to hug someone.',msg);
 					});
 					
 					var query = { "_id": "hugs"}	  
@@ -73,7 +74,7 @@ module.exports = {
 						var query = { "_id": counter}
 						db.collection("hugs").findOneAndUpdate(query, {$set: {"_id": counter}},  function(err,doc) {
 							if (err) { throw err; }
-							else { console.log("Updated id:" + counter); }
+							else { console.log("Updated id: " + counter); }
 						});
 					}
 					//change the index of hugs _id
@@ -82,7 +83,7 @@ module.exports = {
 				catch(err)
 				{
 					console.log(err);
-					msg.channel.send('Something went wrong... maybe that was not an option?');
+					unifiedIO.print('Something went wrong... maybe that was not an option?',msg);
 				}
 				
 			}

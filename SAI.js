@@ -95,7 +95,7 @@ initDb(function(err){
 
 //  DATABASE STUFF ends here. ^^
 
-unifiedIO.debugLog("==== Debug mode on. ====");
+unifiedIO.debugLog("====== Debug mode on. ======");
 
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
@@ -153,7 +153,7 @@ function onNewInput(msg) {
 	if (!DEBUGFLAG) {
 		var input = msg.content;
 	}
-	// NOTE TO SELF: DO THE SAME FOR THINGS LIKE "AUTHOR". i.e., provide a unified value for author so that things that use it don't complain about msg not having that property.  //
+	// TODO: DO THE SAME FOR THINGS LIKE "AUTHOR". i.e., provide a unified value for author so that things that use it don't complain about msg not having that property.  //
 	
 	if (!input.startsWith(process.env.PREFIX)) return;
 	
@@ -244,7 +244,7 @@ function onNewInput(msg) {
 	}
 	
 	try {
-		 command.execute(msg, args, db, aborts);
+		command.execute(msg, args, db, aborts);
 	}
 	catch (error) {
 		console.error(error);
@@ -259,7 +259,7 @@ function onNewInput(msg) {
 // Create an event listener for new guild members
 client.on('guildMemberAdd', member => {
 	// Send the message to a designated channel on a server:
-	// NOTE: Delegate stuff like this to a config file?
+	// TODO: Delegate stuff like this to a config file?
 	const channel = member.guild.channels.find('name', 'shrine-artificial-intellegence');
 	// Do nothing if the channel wasn't found on this server
 	if (!channel) return;
@@ -270,7 +270,7 @@ client.on('guildMemberAdd', member => {
 // Create an event listener for leaving guild members
 client.on('guildMemberRemove', member => {
 	// Send the message to a designated channel on a server:
-	// NOTE: Delegate stuff like this to a config file?
+	// TODO: Delegate stuff like this to a config file?
 	const channel = member.guild.channels.find('name', 'shrine-artificial-intellegence');
 	// Do nothing if the channel wasn't found on this server
 	if (!channel) return;
