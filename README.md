@@ -4,7 +4,7 @@ A Discord bot with various commands and Mongo database support.
 Getting the bot running locally:
 
 1. Install the dependencies
-
+   
    grab the latest Node JS (https://nodejs.org/en/download/current/)
    
    (Mongo DB is optional)
@@ -14,7 +14,7 @@ Getting the bot running locally:
 2. Clone the repo
 
 3. Open the repo
-
+   
    Open the file Index.js inside the folder DiscordWithDatabase
    
    Change `var sai = require('./SAI.js');`

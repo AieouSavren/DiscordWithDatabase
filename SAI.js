@@ -81,7 +81,8 @@ var initDb = function(callback) {
 		}
 		
 		db = conn;
-		dbDetails.databaseName = db.databaseName; //there's a defined default?... apparently admin on unsecure systems. 
+		dbDetails.databaseName = db.databaseName;
+		// ^ By default ("on unsecured systems" according to Ed's previous comment), this is the "admin" db.
 		dbDetails.url = mongoURLLabel;
 		dbDetails.type = 'MongoDB';
 		
@@ -120,7 +121,6 @@ client.on("message", async message => {
 		onNewInput(message);
 	}
 });
-// don't forget about disabling client.login(process.env.TOKEN) too
 
 
 

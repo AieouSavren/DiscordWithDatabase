@@ -12,9 +12,7 @@ module.exports = {
 	execute(msg, args) {
 		if (args.length == 1) {
 			checkStream(args[0], process.env.TWITCH, function(returncall) {
-				unifiedIO.print(msg.author + ', ' + util.format("", returncall),msg);
-				// The usage of "util.format()" may be unnecessary here.
-				// AFAIK, it is being used to simply concatenate a string.
+				unifiedIO.print(msg.author + ', ' + returncall,msg);
 			});
 		} else {
 			unifiedIO.print(msg.author + ', please enter the Twitch channel name (as it appears in the url e.g. edmazing... or someone who actually streams a lot...)',msg);
@@ -26,6 +24,7 @@ module.exports = {
 
 
 function checkStream(channelName, TwitchToken, callback) {
+	// Note that "TwitchToken" is actually a Twitch client ID from a registered application.
 	request('https://api.twitch.tv/kraken/streams/' + channelName + '?client_id=' + TwitchToken + '', function (error, response, body)
 	{
 		if (!error && response.statusCode == 200) {
@@ -39,10 +38,10 @@ function checkStream(channelName, TwitchToken, callback) {
 			
 			//console.log("streaming?:" + stream);
 			return callback('' + channelName + ' is Not active');
+		} else if (response.statusCode == 400) {
+			return callback("Twitch returned error 400 (Invalid Request). Check that the Twitch client ID is valid.");
 		} else {
 			return callback("error: " + error + " Server Response: "  + response.statusCode + '');
-			//NOTE: ADD SOMEWHERE TO CHECK IF YOU ACTUALLY HAVE A VALID TWITCH TOKEN
-			// AND REPORT TO THE USER WHEN YOU DO NOT (code 400?)
 			//console.log(error);
 			//console.log(response.statusCode);
 		}
