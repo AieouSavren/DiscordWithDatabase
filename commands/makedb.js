@@ -34,7 +34,7 @@ module.exports = {
 			
 		}
 		if (db) {
-			// TODO: add a check if this was already run
+			// TODO: add a check to see if this was already run
 			
 			//setup the auto incrementer
 			try {
@@ -45,8 +45,9 @@ module.exports = {
 						if (err) throw err;
 						var collection = db.collection('hugs');
 						
+						//  TODO: Change "adverbs" to "value".
 						collection.insert({ _id: autoIndex, adverbs: HugAdverbs[this.i] });
-					}.bind( {i: i} ));
+					}.bind( {i: i} )); // This bind is req'd to make the for loop work
 					
 				}
 			}

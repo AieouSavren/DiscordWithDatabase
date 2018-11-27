@@ -86,7 +86,7 @@ var initDb = function(callback) {
 		dbDetails.url = mongoURLLabel;
 		dbDetails.type = 'MongoDB';
 		
-		console.log('Connected to MongoDB at: %s', mongoURL);
+		console.log('Connected to MongoDB at: %s', mongoURL); // Does this really need to be a format string? Just concat...
 	});
 };
 
@@ -125,7 +125,7 @@ client.on("message", async message => {
 
 
 
-function onNewInput(msg) {
+async function onNewInput(msg) {
 	/* "msg" can be either a string or a Message object.
 		This function will be written to accept both,
 		using the "process.env.DEBUG_FLAG" to determine which

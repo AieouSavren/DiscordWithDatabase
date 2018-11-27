@@ -42,12 +42,12 @@ module.exports = {
 			
 			if (!db) {
 				//initDb(function(err){});
-				for(i3 = 0; i3<args.length-1;i3++)
+				for(i3 = 0; i3 < args.length-1; i3++)
 				{
 					returnmessage += args[i3] + ' ';
 				}
 				
-				returnmessage += args[args.length-1];
+				returnmessage += args[args.length - 1];
 				
 				unifiedIO.print('SAI cannot remember to hug "' + returnmessage + '" right now. (No database)',msg); 
 				return;
@@ -56,12 +56,12 @@ module.exports = {
 			if (db) {
 				try {
 					
-					for(i3 = 0; i3<args.length-1;i3++)
+					for(i3 = 0; i3 < args.length-1; i3++)
 					{
 						returnmessage += args[i3] + ' ';
 					}
 					
-					returnmessage += args[args.length];
+					returnmessage += args[args.length - 1];
 					
 					autoIncrement.getNextSequence(db, 'hugs', function (err, autoIndex) {
 						if (err) throw err;

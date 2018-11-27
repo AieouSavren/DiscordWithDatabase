@@ -71,12 +71,12 @@ module.exports = {
 					
 					autoIncrement.getNextSequence(db, 'tfspecies', function(err, autoIndex) {
 						if (err) throw err;
+						// TODO: Change to db.collection('tfspecies').insert()
 						var collection = db.collection('tfspecies');
 						collection.insert({
 							_id: autoIndex,
 							adverbs: args[1]
 						});
-						//console.log('The Sai bot can now hug ' + returnmessage + '!');
 						
 					});
 					
@@ -85,7 +85,7 @@ module.exports = {
 					
 				} catch (err) {
 					console.log(err);
-					unifiedIO.print('There was an error adding that to the database.');
+					unifiedIO.print('There was an error adding that to the database.',msg);
 				}
 				
 				
