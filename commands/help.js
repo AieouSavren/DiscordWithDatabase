@@ -40,13 +40,7 @@ module.exports = {
 		}
 		
 		
-		// NOTE:
-		// Original code line:
-		//    msg.channel.send(data, { split: true })
-		// Note the presence of `split: true`. This tells Discord.js
-		// to split the message if it's too long. This functionality
-		// is not yet implemented in unifiedIO.
-		unifiedIO.print(data,msg);
+		unifiedIO.printSplit(data,msg);
 		
 		
 		//dm? No people probably wanna know it's got a cool down too.

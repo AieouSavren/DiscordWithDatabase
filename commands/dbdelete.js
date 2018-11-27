@@ -7,22 +7,20 @@ var autoIncrement = require("mongodb-autoincrement");
 //until Val says it's ok to do so.
 //  TODO: !db [delete | add | list]
 //		1. delete is IMPLEMENTED.
-//		2. list WILL BE EASY TO IMPLEMENT.
-//		        Literally just db.collections(selectedCollection).find() and then format the results >w>
+//		2. list is PRETTY MUCH IMPLEMENTED.
 //		3. add is NOT IMPLEMENTED.
-//  TODO: Somehow prevent !db from working on collections that it's not for...? Whitelist?
+//  TODO: Somehow prevent !db from working on collections that it's not for (i.e., more than one column)...? Whitelist?
+//  TODO: Restrict !db usage to moderators and the like.
 
 
 module.exports = {
 	name: 'dbdelete',
-	aliases: ['dbremove' , 'dbd'], //  TODO: Remember to remove "dbd"
-	cooldown: 5,
+	aliases: ['dbremove' , 'dbd'], //  TODO: This will eventually not be needed I guess
+	cooldown: 1,
 	description: 'Removes stuff from the database (WIP)',
 	usage: '__collection__ __adverb__',
 	execute: async function(msg, args, db) {
-		var author = msg.author; 
-		var num = 0;
-		var returnmessage = "";
+		var author = msg.author;
 		
 		if (!args.length) {
 			unifiedIO.print('Give me a collection, and an item to delete from the list...',msg);
@@ -57,7 +55,7 @@ module.exports = {
 					
 					
 					// First, we need to check if the collection is actually in the DB.
-					console.log("Did the user give a collection that exists? : " + collecNames.includes(selectedCollection));
+					unifiedIO.debugLog("Did the user give a collection that exists? : " + collecNames.includes(selectedCollection));
 					
 					if (!collecNames.includes(selectedCollection)) {
 						unifiedIO.print("Error: " + selectedCollection + " is not a valid collection.",msg);
@@ -87,7 +85,7 @@ module.exports = {
 							console.log('Something went wrong...?');
 							return; //dont sort or change the count if we couldnt remove an element
 						}
-						console.log("Documents removed: " + result.deletedCount);
+						unifiedIO.debugLog("Documents removed: " + result.deletedCount);
 						unifiedIO.print('"' + selectedItem + '" has been removed from ' + selectedCollection + '.',msg);
 						correctIDs(db,selectedCollection,selectedItem);
 					});

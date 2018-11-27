@@ -28,3 +28,16 @@ exports.print = function (str,msg) {
 		msg.channel.send(str);
 	}
 };
+
+exports.printSplit = function (str,msg) {
+	/* Note that "msg" is a DISCORD.JS MESSAGE OBJECT!
+		It is used to retrieve the proper Discord
+		channel to send "str" onto. */
+	// This command splits the message if needed because of the char limit.
+	// Use like `unifiedIO.printSplit("bla bla",msg)`.
+	if (process.env.DEBUG_FLAG == "true") {
+		console.log(str);
+	} else {
+		msg.channel.send(str, { split: true });
+	}
+};

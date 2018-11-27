@@ -1,5 +1,7 @@
 var unifiedIO = require('../unifiedIO.js');
 
+//  TODO: Add support for rolls like "3d4+3"!
+
 module.exports = {
 	name: 'roll',
 	aliases: ['rolls'],
