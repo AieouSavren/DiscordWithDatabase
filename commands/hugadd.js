@@ -66,7 +66,7 @@ module.exports = {
 					autoIncrement.getNextSequence(db, 'hugs', function (err, autoIndex) {
 						if (err) throw err;
 						var collection = db.collection('hugs');
-						collection.insert({ _id: autoIndex, adverbs: returnmessage });
+						collection.insert({ _id: autoIndex, value: returnmessage });
 						
 						unifiedIO.print('The Sai bot can now hug ' + returnmessage + '!',msg);
 						

@@ -6,8 +6,9 @@ var autoIncrement = require("mongodb-autoincrement");
 //It is literally patchwork at any given time. Don't use it
 //until Val says it's ok to do so.
 //  TODO: !db [delete | add | list]
-//		1. delete is ALMOST IMPLEMENTED. (Don't forget about "adverbs" vs "value"!)
+//		1. delete is IMPLEMENTED.
 //		2. list WILL BE EASY TO IMPLEMENT.
+//		        Literally just db.collections(selectedCollection).find() and then format the results >w>
 //		3. add is NOT IMPLEMENTED.
 //  TODO: Somehow prevent !db from working on collections that it's not for...? Whitelist?
 
@@ -36,12 +37,12 @@ module.exports = {
 				try {
 					
 					//  TODO: Complain about improper number of args.
-					//  also TODO: Accept item that has spaces in it. Nab the code from hugdelete.js.
+					//  also TODO: Accept "item" that has spaces in it. Nab the code from hugdelete.js.
 					var selectedCollection = args[0];
 					var selectedItem = args[1];
 					
-					console.log("Selected collection: " + selectedCollection);
-					console.log("Item selected to be removed: " + selectedItem);
+					//console.log("Selected collection: " + selectedCollection);
+					//console.log("Item selected to be removed: " + selectedItem);
 					
 					
 					
@@ -56,7 +57,7 @@ module.exports = {
 					
 					
 					// First, we need to check if the collection is actually in the DB.
-					console.log("Did the user give a collec that exists? : " + collecNames.includes(selectedCollection));
+					console.log("Did the user give a collection that exists? : " + collecNames.includes(selectedCollection));
 					
 					if (!collecNames.includes(selectedCollection)) {
 						unifiedIO.print("Error: " + selectedCollection + " is not a valid collection.",msg);
@@ -66,8 +67,7 @@ module.exports = {
 					
 					// Next, we need to check if the item is actually in the collection.
 					
-					//  TODO: Change "adverbs" to "value".
-					var query = { adverbs: { $eq: selectedItem} };
+					var query = { value: { $eq: selectedItem} };
 					let numOfFind = await db.collection(selectedCollection)
 											.find(query)
 											.count();
@@ -79,7 +79,7 @@ module.exports = {
 					}
 					
 					
-					// DELETE selectedCollection WHERE adverbs = selectedItem
+					// DELETE selectedCollection WHERE value = selectedItem
 					db.collection(selectedCollection).deleteMany(query, function(err, result) {
 						if (err) {
 							throw err;
@@ -89,10 +89,11 @@ module.exports = {
 						}
 						console.log("Documents removed: " + result.deletedCount);
 						unifiedIO.print('"' + selectedItem + '" has been removed from ' + selectedCollection + '.',msg);
+						correctIDs(db,selectedCollection,selectedItem);
 					});
 					
-					//fixNegativeIDs(); // Use a db.find operation to check for negative IDs? or... use the sorted thing?
-					correctIDs(db,selectedCollection,selectedItem);
+					
+					
 					
 				}
 				catch(err)
@@ -110,16 +111,16 @@ module.exports = {
 var correctIDs = async function(db,selectedCollection,selectedItem) {
 	/* This function takes a "messed up" sequence of IDs
 		(For example: 
-		{ "_id" : 2, "adverbs" : "tightly" }
-		{ "_id" : 4, "adverbs" : "merrily" }
-		{ "_id" : 9, "adverbs" : "tiredly" }
-		{ "_id" : 1, "adverbs" : "firmly" }
+		{ "_id" : 2, "value" : "tightly" }
+		{ "_id" : 4, "value" : "merrily" }
+		{ "_id" : 9, "value" : "tiredly" }
+		{ "_id" : 1, "value" : "firmly" }
 		)
 		and corrects it so that they are in order, with no gaps
-		{ "_id" : 1, "adverbs" : "firmly" }
-		{ "_id" : 2, "adverbs" : "tightly" }
-		{ "_id" : 3, "adverbs" : "merrily" }
-		{ "_id" : 4, "adverbs" : "tiredly" }
+		{ "_id" : 1, "value" : "firmly" }
+		{ "_id" : 2, "value" : "tightly" }
+		{ "_id" : 3, "value" : "merrily" }
+		{ "_id" : 4, "value" : "tiredly" }
 		AND it updates the seq in counters.
 	*/
 
@@ -128,11 +129,12 @@ var correctIDs = async function(db,selectedCollection,selectedItem) {
 	//unifiedIO.debugLog(sortedCollec);
 	
 	//  TODO: Use this sorted collection to check for negative IDs
-	//		  If the first item's ID is negative, then we can commence checking
-	//		  This can continue until we hit a positive ID.
+	//		  If the first item's ID is negative, then we can commence checking, one by one
+	//		  until we hit a positive ID.
+	//  old comment: //fixNegativeIDs(); // Use a db.find operation to check for negative IDs? or... use the sorted thing?
 
 	// Normalize document sequence numbers.
-	// Remember that this only occurs if the user has deleted something.
+	// Remember that this only occurs if the user has succesfully deleted something.
 	// NOTE THAT THIS CODE DOES NOT WORK
 	// IF ANY _IDS HAVE NEGATIVE SEQ VALUES!!
 	// IT WILL HAVE A DUPLICATE KEY ERROR!!
@@ -147,14 +149,13 @@ var correctIDs = async function(db,selectedCollection,selectedItem) {
 				// Remove the offending doc...
 			db.collection(selectedCollection).deleteOne({_id: ithID})
 			.then((result) => {
-				//console.log("Deleted {" + ithID + "," + sortedCollec[i].adverbs + "}.");
+				//console.log("Deleted {" + ithID + "," + sortedCollec[i].value + "}.");
 			})
 			.then(() => {
 				// ...then re-insert the doc with the proper ID.
 				
-				//  TODO: Change "adverbs" to "value".
-				//console.log("Attempting to insert {" + (i + 1) + "," + sortedCollec[i].adverbs + "}.");
-				db.collection(selectedCollection).insertOne({_id: i + 1, adverbs: sortedCollec[i].adverbs});
+				//console.log("Attempting to insert {" + (i + 1) + "," + sortedCollec[i].value + "}.");
+				db.collection(selectedCollection).insertOne({_id: i + 1, value: sortedCollec[i].value});
 			})
 			.catch((err) => { throw err; });
 		

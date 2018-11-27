@@ -26,7 +26,7 @@ module.exports = {
 					
 					args[0] = args[0].replace(/_/g, ' ');
 					 
-						var query = { adverbs: args[0] };
+						var query = { value: args[0] };
 
 						db.collection("tfinfs").remove(query, true, function(err, result) {
 						if (err) {
@@ -65,7 +65,7 @@ module.exports = {
 					///Removed the inflation type now for the Species
 					args[1] = args[1].replace(/_/g, ' ');
 					 
-						var query = { adverbs: args[1] };
+						var query = { value: args[1] };
 
 						db.collection("tfspecies").remove(query, true, function(err, result) {
 						if (err) {

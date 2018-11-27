@@ -41,10 +41,11 @@ module.exports = {
 					i += 1; //1 to max
 					
 					
+					// TODO: PROMISESSSS
 					var query = { _id: i };
-					db.collection("hugs").find(query, {_id: 0, adverbs: 1}).toArray(function(err, hresult) {
+					db.collection("hugs").find(query, {_id: 0, value: 1}).toArray(function(err, hresult) {
 						if (err) throw err;
-						unifiedIO.print('The Sai bot ' + hresult[0].adverbs + ' hugs ' +  author + '!',msg);
+						unifiedIO.print('The Sai bot ' + hresult[0].value + ' hugs ' +  author + '!',msg);
 					});
 				});
 			}

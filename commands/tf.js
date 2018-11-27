@@ -49,10 +49,14 @@ module.exports = {
 		}
 		
 		
+		//  TODO: Add database support for !tf.
+		
+		
 		// Actual output begins here.
 		// ISSUE NOTE: This code can currently output stuff like
 		// "Sai blesses [user] with a inflatable skunk transformation!"
 		// which is ungrammatical. TODO: Needs to be fixed eventually.
+		//  also TODO: Just... clean up this... whole sort of area.
 		if(!Array.isArray(args) || args.length === 0)
 		{
 			unifiedIO.print('Sai blesses ' + author + ' with a' + InflatableTypes[i] + ' ' + Species[i2] +  ' ' + 'transformation!',msg);
@@ -70,7 +74,7 @@ module.exports = {
 		}
 		else
 		{
-			for(i3 = 0; i3<args.length;i3++)
+			for(i3 = 0; i3 < args.length; i3++)
 			{
 				returnmessage += args[i3] + ' ';
 			}

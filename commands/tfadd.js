@@ -62,7 +62,7 @@ module.exports = {
 						var collection = db.collection('tfinfs');
 						collection.insert({
 							_id: autoIndex,
-							adverbs: args[0]
+							value: args[0]
 						});
 						//console.log('The Sai bot can now hug ' + returnmessage + '!');
 						
@@ -75,7 +75,7 @@ module.exports = {
 						var collection = db.collection('tfspecies');
 						collection.insert({
 							_id: autoIndex,
-							adverbs: args[1]
+							value: args[1]
 						});
 						
 					});

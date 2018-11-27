@@ -2,6 +2,7 @@ var unifiedIO = require('../unifiedIO.js');
 
 var autoIncrement = require("mongodb-autoincrement");
 
+//  TODO: Either rename this command, or also add the default tfs. Maybe both?
 
 var HugAdverbs = new Array ();
 HugAdverbs[0] = "firmly";
@@ -17,7 +18,7 @@ HugAdverbs[9] = "ferociously";
 
 module.exports = {
 	name: 'makedatabase',
-	aliases: ['db', 'setup', 'makedb'],
+	aliases: ['setup', 'makedb'],
 	cooldown: 5,
 	description: 'Builds a database! Be amazed, be very amazed.',
 	usage: ' ',
@@ -45,8 +46,7 @@ module.exports = {
 						if (err) throw err;
 						var collection = db.collection('hugs');
 						
-						//  TODO: Change "adverbs" to "value".
-						collection.insert({ _id: autoIndex, adverbs: HugAdverbs[this.i] });
+						collection.insert({ _id: autoIndex, value: HugAdverbs[this.i] });
 					}.bind( {i: i} )); // This bind is req'd to make the for loop work
 					
 				}

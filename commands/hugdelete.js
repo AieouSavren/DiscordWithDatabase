@@ -47,7 +47,7 @@ module.exports = {
 					returnmessage += args[args.length-1];
 					unifiedIO.debugLog("Adverb to remove: " + returnmessage);
 					
-					var query = { adverbs: { $eq: returnmessage} };
+					var query = { value: { $eq: returnmessage} };
 					
 					db.collection("hugs").deleteMany(query, function(err, result) {
 						if (err) {
