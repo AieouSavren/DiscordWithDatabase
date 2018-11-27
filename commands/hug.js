@@ -30,21 +30,21 @@ module.exports = {
 				unifiedIO.print('The Sai bot ' + HugAdverbs[rand] + ' hugs ' +  author + '!',msg);
 			}
 			if (db) {
+				// TODO: Promisessss
 				var query = { _id: "hugs" };
 				db.collection("counters").find(query, {_id: 0, seq: 1}).toArray(function(err, result) {
 					if (err) throw err;
+					
 					num = result[0].seq;
-					
-					
 					
 					var i = Math.floor(num*Math.random()); //0 to n-1
 					i += 1; //1 to max
 					
 					
 					var query = { _id: i };
-					db.collection("hugs").find(query, {_id: 0, adverbs: 1}).toArray(function(err, result) {
+					db.collection("hugs").find(query, {_id: 0, adverbs: 1}).toArray(function(err, hresult) {
 						if (err) throw err;
-						unifiedIO.print('The Sai bot ' + result[0].adverbs + ' hugs ' +  author + '!',msg);
+						unifiedIO.print('The Sai bot ' + hresult[0].adverbs + ' hugs ' +  author + '!',msg);
 					});
 				});
 			}

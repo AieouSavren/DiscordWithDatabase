@@ -34,7 +34,7 @@ module.exports = {
 						unifiedIO.print('roll: ' + returnnum,msg);
 					}
 				} else {
-					unifiedIO.print('Expecting the command in the format of !roll 1d20',msg);
+					unifiedIO.print('Didn\'t split properly. Expecting the command in the format of !roll 1d20',msg);
 				}
 				
 				

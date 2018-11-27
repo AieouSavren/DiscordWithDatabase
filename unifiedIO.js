@@ -3,6 +3,7 @@ require('dotenv').config();
 exports.debugLog = function (str) {
 	/* Used for things you want to output in debug mode
 		but not in normal mode, like "> Received". */
+	// Use like `unifiedIO.debugLog("bla bla")`.
 	if (process.env.DEBUG_FLAG == "true") {
 		console.log(str);
 	}
