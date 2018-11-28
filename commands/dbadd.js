@@ -1,5 +1,7 @@
 var unifiedIO = require('../unifiedIO.js');
 
+var autoIncrement = require("mongodb-autoincrement");
+
 //This whole command is currently experimental.
 //It is literally patchwork at any given time. Don't use it
 //until Val says it's ok to do so.
@@ -7,11 +9,11 @@ var unifiedIO = require('../unifiedIO.js');
 
 
 module.exports = {
-	name: 'dblist',
-	aliases: ['dbl'], //  TODO: This will eventually not be needed I guess
+	name: 'dbadd',
+	aliases: ['dba'], //  TODO: This will eventually not be needed I guess
 	cooldown: 1,
-	description: 'Lists "adverbs" in the database (WIP)',
-	usage: '__collection__',
+	description: 'Adds stuff to the database (WIP)',
+	usage: '__collection__ __item__',
 	execute: async function(msg, args, db) {
 		
 		if (!args.length) {
@@ -27,6 +29,18 @@ module.exports = {
 				try {
 					
 					var selectedCollection = args[0];
+					var selectedItem = "";
+					
+					if (args.length > 2) {
+						for(i = 1; i < args.length - 1; i++)
+						{
+							selectedItem += args[i] + ' ';
+						}
+						
+						selectedItem += args[args.length - 1];
+					} else {
+						selectedItem = args[1];
+					}
 					
 					// Get the list of collection names
 					let collecsListArray = await db.listCollections({},{nameOnly: true}).toArray();
@@ -38,7 +52,7 @@ module.exports = {
 					
 					
 					
-					// We need to check if the collection is actually in the DB.
+					// First, we need to check if the collection is actually in the DB.
 					unifiedIO.debugLog("Did the user give a collection that exists? : " + collecNames.includes(selectedCollection));
 					
 					if (!collecNames.includes(selectedCollection)) {
@@ -46,19 +60,15 @@ module.exports = {
 						return;
 					}
 					
-					// First, we grab the whole collection, sorted in order by _id.
-					var sortedCollec = await db.collection(selectedCollection).find({},{_id: 0, value: 1}).sort({_id: 1}).toArray();
 					
-					
-					var collecValues = []
-					
-					// The for loop extracts all the values from our sortedCollec object
-					//  into a simple string array.
-					for (k of sortedCollec) {
-						collecValues.push(k.value);
-					}
-					
-					unifiedIO.printSplit("Contents of " + selectedCollection + ": " + collecValues.join(', '),msg);
+					autoIncrement.getNextSequence(db, selectedCollection, function (err, autoIndex) {
+						if (err) throw err;
+						var collection = db.collection(selectedCollection);
+						collection.insert({ _id: autoIndex, value: selectedItem });
+						
+						unifiedIO.print('Inserted "' + selectedItem + '" into ' + selectedCollection + '.',msg);
+						
+					});
 					
 					
 					

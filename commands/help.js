@@ -24,7 +24,8 @@ module.exports = {
 			//consider adjusting the cool down?
 			
 			if (!commands.has(args[0])) {
-				return msg.channel.send(msg.author + ', that\'s not a valid command!');
+				unifiedIO.print(msg.author + ', that\'s not a valid command!',msg)
+				return;
 			}
 			
 			const command = commands.get(args[0]);

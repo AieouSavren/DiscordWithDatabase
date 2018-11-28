@@ -1,16 +1,17 @@
 var unifiedIO = require('../unifiedIO.js');
 
-var autoIncrement = require("mongodb-autoincrement");
+
 
 //This whole command is currently experimental.
 //It is literally patchwork at any given time. Don't use it
 //until Val says it's ok to do so.
 //  TODO: !db [delete | add | list | normalize]
 //		1. delete is IMPLEMENTED.
-//		2. list is PRETTY MUCH IMPLEMENTED.
-//		3. add is NOT IMPLEMENTED.
+//		2. list is IMPLEMENTED.
+//		3. add is IMPLEMENTED.
 //		4. normalize is IMPLEMENTED.
 //		  5. Once these individual commands are implemented, add the aliasing feature to replace !hugadd and the like.
+//		     This aliasing can be performed simply with require() and execute(), manually passing args.
 //  TODO: Somehow prevent !db from working on collections that it's not for (i.e., more than one column)...? Whitelist?
 //  TODO: Restrict !db usage to moderators and the like.
 
@@ -21,9 +22,8 @@ module.exports = {
 	aliases: ['dbremove' , 'dbd'], //  TODO: This will eventually not be needed I guess
 	cooldown: 1,
 	description: 'Removes stuff from the database (WIP)',
-	usage: '__collection__ __adverb__',
+	usage: '__collection__ __item__',
 	execute: async function(msg, args, db) {
-		var author = msg.author;
 		
 		if (!args.length) {
 			unifiedIO.print('Give me a collection, and an item to delete from it...',msg);
@@ -178,7 +178,7 @@ var correctIDs = async function(db,selectedCollection) {
 	// Update the corresponding seq.
 	db.collection("counters").findOneAndUpdate({_id: selectedCollection}, {$set: {"seq": sortedCollec.length}})
 	.then(() => {
-		console.log("Updated counters. Current seq: " + sortedCollec.length);
+		unifiedIO.debugLog("Updated counters. Current seq: " + sortedCollec.length);
 	})
 	.catch((err) => { throw err; });;
 }

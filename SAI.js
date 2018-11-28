@@ -158,9 +158,10 @@ async function onNewInput(msg) {
 	if (!input.startsWith(process.env.PREFIX)) return;
 	
 	const args = input.slice(process.env.PREFIX.length).trim().split(/ +/g);
-	const commandName = args.shift().toLowerCase();
+	const commandName = args.shift().toLowerCase(); // shift pops the first element of the array
 	/* After these two statements, args consists of an array of arguments,
-		minus the command that directly follows the prefix. */
+		minus the command that directly follows the prefix.
+	   Example: !hug quite nicely -> ["quite","nicely"]*/
 	
 	
 	//  INPUT VALIDATION begins here.

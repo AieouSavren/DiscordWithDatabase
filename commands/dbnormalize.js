@@ -1,7 +1,5 @@
 var unifiedIO = require('../unifiedIO.js');
 
-var autoIncrement = require("mongodb-autoincrement");
-
 //This whole command is currently experimental.
 //It is literally patchwork at any given time. Don't use it
 
@@ -12,9 +10,8 @@ module.exports = {
 	aliases: ['dbcorrect' , 'dbn' , 'dbc'], //  TODO: This will eventually not be needed I guess
 	cooldown: 1,
 	description: 'Normalizes the IDs of documents in a single-column collection. (WIP)',
-	usage: '__collection__ __adverb__',
+	usage: '__collection__',
 	execute: async function(msg, args, db) {
-		var author = msg.author;
 		
 		if (!args.length) {
 			unifiedIO.print('Give me a collection to fix.',msg);
@@ -52,7 +49,7 @@ module.exports = {
 						return;
 					}
 					
-					
+					// If our collection is valid... fix it!
 					correctIDs(db,selectedCollection);
 					
 					
@@ -128,7 +125,7 @@ var correctIDs = async function(db,selectedCollection) {
 	// Update the corresponding seq.
 	db.collection("counters").findOneAndUpdate({_id: selectedCollection}, {$set: {"seq": sortedCollec.length}})
 	.then(() => {
-		console.log("Updated counters. Current seq: " + sortedCollec.length);
+		unifiedIO.debugLog("Updated counters. Current seq: " + sortedCollec.length);
 	})
 	.catch((err) => { throw err; });;
 }
