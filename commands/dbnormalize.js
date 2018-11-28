@@ -4,31 +4,20 @@ var autoIncrement = require("mongodb-autoincrement");
 
 //This whole command is currently experimental.
 //It is literally patchwork at any given time. Don't use it
-//until Val says it's ok to do so.
-//  TODO: !db [delete | add | list | normalize]
-//		1. delete is IMPLEMENTED.
-//		2. list is PRETTY MUCH IMPLEMENTED.
-//		3. add is NOT IMPLEMENTED.
-//		4. normalize is IMPLEMENTED.
-//		  5. Once these individual commands are implemented, add the aliasing feature to replace !hugadd and the like.
-//  TODO: Somehow prevent !db from working on collections that it's not for (i.e., more than one column)...? Whitelist?
-//  TODO: Restrict !db usage to moderators and the like.
 
 
 
 module.exports = {
-	name: 'dbdelete',
-	aliases: ['dbremove' , 'dbd'], //  TODO: This will eventually not be needed I guess
+	name: 'dbnormalize',
+	aliases: ['dbcorrect' , 'dbn' , 'dbc'], //  TODO: This will eventually not be needed I guess
 	cooldown: 1,
-	description: 'Removes stuff from the database (WIP)',
+	description: 'Normalizes the IDs of documents in a single-column collection. (WIP)',
 	usage: '__collection__ __adverb__',
 	execute: async function(msg, args, db) {
 		var author = msg.author;
 		
 		if (!args.length) {
-			unifiedIO.print('Give me a collection, and an item to delete from it...',msg);
-		} else if (args.length == 1) {
-			unifiedIO.print('Give me an item to delete from the collection. (Check usage with !help)',msg);
+			unifiedIO.print('Give me a collection to fix.',msg);
 		}
 		else
 		{
@@ -40,21 +29,8 @@ module.exports = {
 				try {
 					
 					var selectedCollection = args[0];
-					var selectedItem = "";
-					
-					if (args.length > 2) {
-						for(i = 1; i < args.length - 1; i++)
-						{
-							selectedItem += args[i] + ' ';
-						}
-						
-						selectedItem += args[args.length - 1];
-					} else {
-						selectedItem = args[1];
-					}
 					
 					//console.log("Selected collection: " + selectedCollection);
-					//console.log("Item selected to be removed: " + selectedItem);
 					
 					
 					
@@ -77,33 +53,7 @@ module.exports = {
 					}
 					
 					
-					// Next, we need to check if the item is actually in the collection.
-					
-					var query = { value: { $eq: selectedItem} };
-					let numOfFind = await db.collection(selectedCollection)
-											.find(query)
-											.count();
-					
-					//console.log("Number of matches: " + numOfFind);
-					if (numOfFind == 0) {
-						unifiedIO.print("Error: No matches in given collection.",msg);
-						return;
-					}
-					
-					
-					// DELETE selectedCollection WHERE value = selectedItem
-					db.collection(selectedCollection).deleteMany(query, function(err, result) {
-						if (err) {
-							throw err;
-							
-							console.log('Something went wrong...?');
-							return; //dont sort or change the count if we couldnt remove an element
-						}
-						unifiedIO.debugLog("Documents removed: " + result.deletedCount);
-						unifiedIO.print('"' + selectedItem + '" has been removed from ' + selectedCollection + '.',msg);
-						correctIDs(db,selectedCollection);
-					});
-					
+					correctIDs(db,selectedCollection);
 					
 					
 					
