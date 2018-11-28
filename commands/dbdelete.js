@@ -28,7 +28,7 @@ module.exports = {
 		if (!args.length) {
 			unifiedIO.print('Give me a collection, and an item to delete from it...',msg);
 		} else if (args.length == 1) {
-			unifiedIO.print('Give me an item to delete from the collection. (Check usage with !help)',msg);
+			unifiedIO.print('Use `!help ' + this.name + '` to see usage.',msg);
 		}
 		else
 		{
