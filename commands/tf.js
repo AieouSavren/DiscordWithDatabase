@@ -24,19 +24,19 @@ module.exports = {
 		Species[7] = "guilmon";
 		
 		var author = msg.author; 
-		var i = Math.floor(InflatableTypes.length*Math.random())
-		var i2 = Math.floor(Species.length*Math.random())
+		var infChoiceNum = Math.floor(InflatableTypes.length*Math.random())
+		var speciesChoiceNum = Math.floor(Species.length*Math.random())
 		var returnmessage = "";
 		
 		
 		if (process.env.DEBUG_FLAG != "true") {
 			//blue guilmon fix.
-			if(msg.author.tag == "Curus Keel#9823" && i2 == 7)
+			if(msg.author.tag == "Curus Keel#9823" && speciesChoiceNum == 7)
 			{
 			
-				while(i2 = 7)
+				while(speciesChoiceNum = 7)
 				{
-					i2 = Math.floor(Species.length*Math.random());
+					speciesChoiceNum = Math.floor(Species.length*Math.random());
 				}
 			}
 			
@@ -44,7 +44,7 @@ module.exports = {
 			// NOTE TO SELF: "some" is an function on arrays. It's exactly like Haskell "elem".
 			if(msg.member.roles.some(role => role.name.includes("LOVED GOD OF INFLATABLES")))
 			{
-				i2 = 2;
+				speciesChoiceNum = 2;
 			}
 		}
 		
@@ -56,15 +56,15 @@ module.exports = {
 		// ISSUE NOTE: This code can currently output stuff like
 		// "Sai blesses [user] with a inflatable skunk transformation!"
 		// which is ungrammatical. TODO: Needs to be fixed eventually.
-		//  also TODO: Just... clean up this... whole sort of area.
+		//  also TODO: Just... clean up this... whole sort of area. I'm sure it can be made more elegant.
 		if(!Array.isArray(args) || args.length === 0)
 		{
-			unifiedIO.print('Sai blesses ' + author + ' with a' + InflatableTypes[i] + ' ' + Species[i2] +  ' ' + 'transformation!',msg);
+			unifiedIO.print('Sai blesses ' + author + ' with a' + InflatableTypes[infChoiceNum] + ' ' + Species[speciesChoiceNum] +  ' ' + 'transformation!',msg);
 			
 		}
 		else if (args.length == 1)
 		{
-			unifiedIO.print('Sai blesses ' + author + ' with a ' + args[0] + ' ' + Species[i2] +  ' ' + 'transformation!',msg);
+			unifiedIO.print('Sai blesses ' + author + ' with a ' + args[0] + ' ' + Species[speciesChoiceNum] +  ' ' + 'transformation!',msg);
 			return;
 		}
 		else if(args.length == 2)
@@ -74,9 +74,9 @@ module.exports = {
 		}
 		else
 		{
-			for(i3 = 0; i3 < args.length; i3++)
+			for(i = 0; i < args.length; i++)
 			{
-				returnmessage += args[i3] + ' ';
+				returnmessage += args[i] + ' ';
 			}
 			unifiedIO.print('Sai blesses ' + author + ' with a ' + returnmessage + 'transformation!',msg);
 			return;

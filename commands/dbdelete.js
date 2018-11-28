@@ -13,6 +13,7 @@ var autoIncrement = require("mongodb-autoincrement");
 //  TODO: Restrict !db usage to moderators and the like.
 
 
+
 module.exports = {
 	name: 'dbdelete',
 	aliases: ['dbremove' , 'dbd'], //  TODO: This will eventually not be needed I guess
@@ -23,7 +24,9 @@ module.exports = {
 		var author = msg.author;
 		
 		if (!args.length) {
-			unifiedIO.print('Give me a collection, and an item to delete from the list...',msg);
+			unifiedIO.print('Give me a collection, and an item to delete from it...',msg);
+		} else if (args.length == 1) {
+			unifiedIO.print('Give me an item to delete from the collection. (Check usage with !help)',msg);
 		}
 		else
 		{
@@ -34,10 +37,19 @@ module.exports = {
 				
 				try {
 					
-					//  TODO: Complain about improper number of args.
-					//  also TODO: Accept "item" that has spaces in it. Nab the code from hugdelete.js.
 					var selectedCollection = args[0];
-					var selectedItem = args[1];
+					var selectedItem = "";
+					
+					if (args.length > 2) {
+						for(i = 1; i < args.length - 1; i++)
+						{
+							selectedItem += args[i] + ' ';
+						}
+						
+						selectedItem += args[args.length - 1];
+					} else {
+						selectedItem = args[1];
+					}
 					
 					//console.log("Selected collection: " + selectedCollection);
 					//console.log("Item selected to be removed: " + selectedItem);
@@ -87,7 +99,7 @@ module.exports = {
 						}
 						unifiedIO.debugLog("Documents removed: " + result.deletedCount);
 						unifiedIO.print('"' + selectedItem + '" has been removed from ' + selectedCollection + '.',msg);
-						correctIDs(db,selectedCollection,selectedItem);
+						correctIDs(db,selectedCollection);
 					});
 					
 					
@@ -106,7 +118,7 @@ module.exports = {
 	},
 };
 
-var correctIDs = async function(db,selectedCollection,selectedItem) {
+var correctIDs = async function(db,selectedCollection) {
 	/* This function takes a "messed up" sequence of IDs
 		(For example: 
 		{ "_id" : 2, "value" : "tightly" }

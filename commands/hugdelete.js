@@ -39,12 +39,12 @@ module.exports = {
 				
 				try {
 					
-					for(i3 = 0; i3<args.length-1;i3++)
+					for(i = 0; i < args.length - 1; i++)
 					{
-						returnmessage += args[i3] + ' ';
+						returnmessage += args[i] + ' ';
 					}
 					
-					returnmessage += args[args.length-1];
+					returnmessage += args[args.length - 1];
 					unifiedIO.debugLog("Adverb to remove: " + returnmessage);
 					
 					var query = { value: { $eq: returnmessage} };
