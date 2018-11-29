@@ -2,17 +2,13 @@ var unifiedIO = require('../unifiedIO.js');
 
 var autoIncrement = require("mongodb-autoincrement");
 
-//This whole command is currently experimental.
-//It is literally patchwork at any given time. Don't use it
-//until Val says it's ok to do so.
-
 
 
 module.exports = {
 	name: 'dbadd',
-	aliases: ['dba'], //  TODO: This will eventually not be needed I guess
+	aliases: ['dba'],
 	cooldown: 1,
-	description: 'Adds stuff to the database (WIP)',
+	description: 'Adds stuff to the database (Internal)',
 	usage: '__collection__ __item__',
 	execute: async function(msg, args, db) {
 		
@@ -66,7 +62,7 @@ module.exports = {
 						var collection = db.collection(selectedCollection);
 						collection.insert({ _id: autoIndex, value: selectedItem });
 						
-						unifiedIO.print('Inserted "' + selectedItem + '" into ' + selectedCollection + '.',msg);
+						unifiedIO.debugLog('Inserted "' + selectedItem + '" into ' + selectedCollection + '.');
 						
 					});
 					

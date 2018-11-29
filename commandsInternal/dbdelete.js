@@ -8,6 +8,8 @@ var unifiedIO = require('../unifiedIO.js');
 //				var dbcmd = require("./db.js");
 //				dbcmd.execute(msg,["add"] + args,db);
 //  TODO: Somehow prevent !db from working on collections that it's not for (i.e., more than one column)...? Whitelist?
+//				Possible solution: Add a *new* collection that lists the collections that !dbdelete is allowed to work on
+//				(insert expanding brain meme here)
 //  TODO: Restrict !db usage to moderators and the like.
 //			Add a property to commands, call "modOnly" or something, a boolean.
 //			In SAI.js:
@@ -15,14 +17,15 @@ var unifiedIO = require('../unifiedIO.js');
 //					if (command.modOnly) { // check if user is mod, return if not }
 //					else { command.execute(msg, args, db, aborts); }
 //				}
+//  TODO: Add syntax usage for !db, so users can actually figure it out... man page? (thonk emoji)
 
 
 
 module.exports = {
 	name: 'dbdelete',
-	aliases: ['dbremove' , 'dbd'], //  TODO: This will eventually not be needed I guess
+	aliases: ['dbremove' , 'dbd'],
 	cooldown: 1,
-	description: 'Removes stuff from the database (WIP)',
+	description: 'Removes stuff from the database (Internal)',
 	usage: '__collection__ __item__',
 	execute: async function(msg, args, db) {
 		
@@ -101,7 +104,7 @@ module.exports = {
 							return; //dont sort or change the count if we couldnt remove an element
 						}
 						unifiedIO.debugLog("Documents removed: " + result.deletedCount);
-						unifiedIO.print('"' + selectedItem + '" has been removed from ' + selectedCollection + '.',msg);
+						unifiedIO.debugLog('"' + selectedItem + '" has been removed from ' + selectedCollection + '.');
 						correctIDs(db,selectedCollection);
 					});
 					

@@ -68,15 +68,19 @@ module.exports = {
 					switch (choice) {
 					case "add":
 						dbadd.execute(msg,args.slice(1),db);
+						unifiedIO.print('Inserted "' + args[2] + '" into ' + args[1] + '.',msg);
 						break;
 					case "delete":
 						dbdelete.execute(msg,args.slice(1),db);
+						unifiedIO.print('"' + args[2] + '" has been removed from ' + args[1] + '.',msg);
 						break;
 					case "list":
 						dblist.execute(msg,args.slice(1),db);
+						// !dblist prints out its own stuff, so... no need for anything extra.
 						break;
 					case "normalize":
 						dbnormalize.execute(msg,args.slice(1),db);
+						unifiedIO.print('Done. `!db list [collection]` can be used to view the collection.',msg);
 						break;
 					default:
 						unifiedIO.print("Not a valid choice. (Use `!help " + this.name + "` to see usage.)",msg);

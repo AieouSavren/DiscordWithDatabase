@@ -1,16 +1,13 @@
 var unifiedIO = require('../unifiedIO.js');
 
-//This whole command is currently experimental.
-//It is literally patchwork at any given time. Don't use it
-//until Val says it's ok to do so.
-
+// TODO: Add the ability to view IDs as well? This command was originally designed to be used by "dumb users" who just want a list of current adverbs for hugs, so, uh, I dunno. The way I see it, if you're running the bot, you have access to the database. That might be asking a bit too much, though... if this bot gets used by more people, then we need to downgrade from "developer-level understanding" requirement for those running the bot, to "power-user-level understanding". Which means printing out IDs too, so they can use this command to debug, I guess.
 
 
 module.exports = {
 	name: 'dblist',
-	aliases: ['dbl'], //  TODO: This will eventually not be needed I guess
+	aliases: ['dbl'],
 	cooldown: 1,
-	description: 'Lists "adverbs" in the database (WIP)',
+	description: 'Lists values of a (single-column) collection in the database. (Internal)',
 	usage: '__collection__',
 	execute: async function(msg, args, db) {
 		

@@ -1,15 +1,12 @@
 var unifiedIO = require('../unifiedIO.js');
 
-//This whole command is currently experimental.
-//It is literally patchwork at any given time. Don't use it
-
 
 
 module.exports = {
 	name: 'dbnormalize',
-	aliases: ['dbcorrect' , 'dbn' , 'dbc'], //  TODO: This will eventually not be needed I guess
+	aliases: ['dbcorrect' , 'dbn' , 'dbc'],
 	cooldown: 1,
-	description: 'Normalizes the IDs of documents in a single-column collection. (WIP)',
+	description: 'Normalizes the IDs of documents in a single-column collection. (Internal)',
 	usage: '__collection__',
 	execute: async function(msg, args, db) {
 		
