@@ -1,35 +1,20 @@
 var unifiedIO = require('../unifiedIO.js');
 
-
-//  TODO: !db [add | delete | list | normalize]
-//		  5. Replace !hugadd and the like.
-//			This aliasing can be performed simply with require() and execute(), manually passing args.
-//			In hugadd.js:
-//				var dbcmd = require("./db.js");
-//				dbcmd.execute(msg,["add"] + args,db);
-//  TODO: Somehow prevent !db from working on collections that it's not for (i.e., more than one column)...? Whitelist?
-//  TODO: Restrict !db usage to moderators and the like.
-//			Add a property to commands, call "modOnly" or something, a boolean.
-//			In SAI.js:
-//				try {
-//					if (command.modOnly) { // check if user is mod, return if not }
-//					else { command.execute(msg, args, db, aborts); }
-//				}
+//This whole command is currently experimental.
+//It is literally patchwork at any given time. Don't use it
 
 
 
 module.exports = {
-	name: 'dbdelete',
-	aliases: ['dbremove' , 'dbd'], //  TODO: This will eventually not be needed I guess
+	name: 'dbnormalize',
+	aliases: ['dbcorrect' , 'dbn' , 'dbc'], //  TODO: This will eventually not be needed I guess
 	cooldown: 1,
-	description: 'Removes stuff from the database (WIP)',
-	usage: '__collection__ __item__',
+	description: 'Normalizes the IDs of documents in a single-column collection. (WIP)',
+	usage: '__collection__',
 	execute: async function(msg, args, db) {
 		
 		if (!args.length) {
-			unifiedIO.print('Give me a collection, and an item to delete from it...',msg);
-		} else if (args.length == 1) {
-			unifiedIO.print('Use `!help ' + this.name + '` to see usage.',msg);
+			unifiedIO.print('Give me a collection to fix.',msg);
 		}
 		else
 		{
@@ -41,21 +26,8 @@ module.exports = {
 				try {
 					
 					var selectedCollection = args[0];
-					var selectedItem = "";
-					
-					if (args.length > 2) {
-						for(i = 1; i < args.length - 1; i++)
-						{
-							selectedItem += args[i] + ' ';
-						}
-						
-						selectedItem += args[args.length - 1];
-					} else {
-						selectedItem = args[1];
-					}
 					
 					//console.log("Selected collection: " + selectedCollection);
-					//console.log("Item selected to be removed: " + selectedItem);
 					
 					
 					
@@ -77,34 +49,8 @@ module.exports = {
 						return;
 					}
 					
-					
-					// Next, we need to check if the item is actually in the collection.
-					
-					var query = { value: { $eq: selectedItem} };
-					let numOfFind = await db.collection(selectedCollection)
-											.find(query)
-											.count();
-					
-					//console.log("Number of matches: " + numOfFind);
-					if (numOfFind == 0) {
-						unifiedIO.print("Error: No matches in given collection.",msg);
-						return;
-					}
-					
-					
-					// DELETE selectedCollection WHERE value = selectedItem
-					db.collection(selectedCollection).deleteMany(query, function(err, result) {
-						if (err) {
-							throw err;
-							
-							console.log('Something went wrong...?');
-							return; //dont sort or change the count if we couldnt remove an element
-						}
-						unifiedIO.debugLog("Documents removed: " + result.deletedCount);
-						unifiedIO.print('"' + selectedItem + '" has been removed from ' + selectedCollection + '.',msg);
-						correctIDs(db,selectedCollection);
-					});
-					
+					// If our collection is valid... fix it!
+					correctIDs(db,selectedCollection);
 					
 					
 					

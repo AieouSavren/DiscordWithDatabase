@@ -1,7 +1,7 @@
-var dbadd = require('./dbadd.js');
-var dbdelete = require('./dbdelete.js');
-var dblist = require('./dblist.js');
-var dbnormalize = require('./dbnormalize.js');
+var dbadd = require('../commandsInternal/dbadd.js');
+var dbdelete = require('../commandsInternal/dbdelete.js');
+var dblist = require('../commandsInternal/dblist.js');
+var dbnormalize = require('../commandsInternal/dbnormalize.js');
 /*
 // !hugadd equivalent
 dbadd.execute(msg,['hugs',returnmessage],db);

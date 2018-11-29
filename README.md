@@ -7,7 +7,7 @@ Getting the bot running locally:
    
    grab the latest Node JS (https://nodejs.org/en/download/current/)
    
-   (Mongo DB is optional)
+   (Mongo DB is optional, but recommended, as it is necessary for some bot features)
    
    https://www.mongodb.com/download-center/community
 

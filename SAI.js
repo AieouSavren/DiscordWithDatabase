@@ -32,6 +32,9 @@ app.use(morgan('combined'));
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
 for (const file of commandFiles) {
+	//  TODO: Make it add stuff that is contained in subdirectories of /commands/, too.
+	//			(Probably not recursively, that would be a bad idea. But single folders for groups of commands.)
+	//			(Probably can be done by doing fs.readdir, and then for (dirs of theStuff) do { add commands in dir })
 	const command = require(`./commands/${file}`);
 	
 	// set a new item in the Collection
@@ -83,6 +86,7 @@ var initDb = function(callback) {
 		db = conn;
 		dbDetails.databaseName = db.databaseName;
 		// ^ By default ("on unsecured systems" according to Ed's previous comment), this is the "admin" db.
+		//      TODO: Change this so Sai creates its own db. 
 		dbDetails.url = mongoURLLabel;
 		dbDetails.type = 'MongoDB';
 		
