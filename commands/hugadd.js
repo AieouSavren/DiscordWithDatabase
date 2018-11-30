@@ -2,7 +2,7 @@ var unifiedIO = require('../unifiedIO.js');
 
 var autoIncrement = require("mongodb-autoincrement");
 
-var dbcmd = require("./db.js");
+var dbadd = require('../commandsInternal/dbadd.js');
 
 
 var HugAdverbs = new Array ();
@@ -25,9 +25,7 @@ module.exports = {
 	cooldown: 5,
 	description: "Add an adverb to SAI's database of hugs!",
 	usage: '__adverb__',
-	execute(msg, args, db) {
-		var author = msg.author; 
-		var num = 0;
+	execute: async function(msg, args, db) {
 		var returnmessage = "";
 		
 		if (!args.length) {
@@ -39,15 +37,10 @@ module.exports = {
 		else
 		{
 			
+			// TODO: Rename all "returnmessage" variables to something more elucidating.
+			returnmessage = args.join(" ");
+			
 			if (!db) {
-				//initDb(function(err){});
-				for(i = 0; i < args.length - 1; i++)
-				{
-					returnmessage += args[i] + ' ';
-				}
-				
-				returnmessage += args[args.length - 1];
-				
 				unifiedIO.print('SAI cannot remember to hug "' + returnmessage + '" right now. (No database)',msg); 
 				return;
 			}
@@ -55,21 +48,12 @@ module.exports = {
 			if (db) {
 				try {
 					
-					for(i = 0; i < args.length - 1; i++)
-					{
-						returnmessage += args[i] + ' ';
+					success = await dbadd.execute(msg,["hugs"].concat(args),db);
+					// It will return false if it reports an error.
+					if (success) {
+						unifiedIO.print('The Sai bot can now hug ' + returnmessage + '!',msg);
 					}
 					
-					returnmessage += args[args.length - 1];
-					
-					autoIncrement.getNextSequence(db, 'hugs', function (err, autoIndex) {
-						if (err) throw err;
-						var collection = db.collection('hugs');
-						collection.insert({ _id: autoIndex, value: returnmessage });
-						
-						unifiedIO.print('The Sai bot can now hug ' + returnmessage + '!',msg);
-						
-					});
 				} catch (err) {
 					console.log(err);
 					unifiedIO.print('There was an error adding that to the database.');
@@ -81,55 +65,3 @@ module.exports = {
 		
 	},
 };
-
-
-
-
-
-
-
-
-
-
-
-/*
-
-
-
-
-		}
-		else
-		{
-			
-			// TODO: Replace with selectedItem = args.join(" "); or whatever
-			for(i = 0; i < args.length - 1; i++)
-			{
-				returnmessage += args[i] + ' ';
-			}
-			
-			returnmessage += args[args.length - 1];
-			
-			if (!db) {
-				//initDb(function(err){});
-				
-				unifiedIO.print('SAI cannot remember to hug "' + returnmessage + '" right now. (No database)',msg); 
-				return;
-			}
-			
-			if (db) {
-				try {
-					
-					dbcmd.execute(msg,["add","hugs"].concat(args),db);
-					unifiedIO.print('The Sai bot can now hug ' + returnmessage + '!',msg);
-					
-				} catch (err) {
-					console.log(err);
-					unifiedIO.print('There was an error adding that to the database.');
-				}
-			
-			}
-			
-		}
-
-
-*/

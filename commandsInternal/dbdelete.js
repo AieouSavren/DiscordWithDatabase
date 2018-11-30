@@ -91,6 +91,7 @@ module.exports = {
 					
 					
 					// DELETE selectedCollection WHERE value = selectedItem
+					// TODO: Use promises and await so that the return statement only returns true in Promise form? So that !db doesn't print things too early... I dunno. Maybe not necessary.
 					db.collection(selectedCollection).deleteMany(query, function(err, result) {
 						if (err) {
 							throw err;
