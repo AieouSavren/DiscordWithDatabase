@@ -74,11 +74,8 @@ module.exports = {
 		}
 		else
 		{
-			for(i = 0; i < args.length; i++)
-			{
-				returnmessage += args[i] + ' ';
-			}
-			unifiedIO.print('Sai blesses ' + author + ' with a ' + returnmessage + 'transformation!',msg);
+			returnmessage = args.join(" ");
+			unifiedIO.print('Sai blesses ' + author + ' with a ' + returnmessage + ' transformation!',msg);
 			return;
 		}
 	},

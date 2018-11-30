@@ -6,7 +6,7 @@ var unifiedIO = require('../unifiedIO.js');
 //			This aliasing can be performed simply with require() and execute(), manually passing args.
 //			In hugadd.js:
 //				var dbcmd = require("./db.js");
-//				dbcmd.execute(msg,["add"] + args,db);
+//				dbcmd.execute(msg,["add","hugs"] + args,db);
 //  TODO: Somehow prevent !db from working on collections that it's not for (i.e., more than one column)...? Whitelist?
 //				Possible solution: Add a *new* collection that lists the collections that !dbdelete is allowed to work on
 //				(insert expanding brain meme here)
@@ -44,17 +44,8 @@ module.exports = {
 					var selectedCollection = args[0];
 					var selectedItem = "";
 					
-					if (args.length > 2) {
-						// TODO: could replace this whole thing with args.slice(1).join(" ") ?
-						for(i = 1; i < args.length - 1; i++)
-						{
-							selectedItem += args[i] + ' ';
-						}
-						
-						selectedItem += args[args.length - 1];
-					} else {
-						selectedItem = args[1];
-					}
+					// Get all args after the first (which is selectedCollection)
+					selectedItem = args.slice(1).join(" ");
 					
 					//console.log("Selected collection: " + selectedCollection);
 					//console.log("Item selected to be removed: " + selectedItem);
@@ -108,7 +99,7 @@ module.exports = {
 							return; //dont sort or change the count if we couldnt remove an element
 						}
 						unifiedIO.debugLog("Documents removed: " + result.deletedCount);
-						unifiedIO.debugLog('"' + selectedItem + '" has been removed from ' + selectedCollection + '.');
+						unifiedIO.debugLog('"' + selectedItem + '" has been removed from ' + selectedCollection + '. (dbdelete)');
 						correctIDs(db,selectedCollection);
 					});
 					

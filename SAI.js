@@ -35,6 +35,7 @@ for (const file of commandFiles) {
 	//  TODO: Make it add stuff that is contained in subdirectories of /commands/, too.
 	//			(Probably not recursively, that would be a bad idea. But single folders for groups of commands.)
 	//			(Probably can be done by doing fs.readdir, and then for (dirs of theStuff) do { add commands in dir })
+	//  TODO: Make a directory for "smart aliases" (i.e. commands like !hugadd)
 	const command = require(`./commands/${file}`);
 	
 	// set a new item in the Collection

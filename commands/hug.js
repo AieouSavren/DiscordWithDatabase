@@ -50,12 +50,9 @@ module.exports = {
 				});
 			}
 		} else {
-			for(i3 = 0; i3<args.length;i3++)
-			{
-				returnmessage += args[i3] + ' ';
-			}
+			returnmessage = args.join(" ");
 			
-			unifiedIO.print('The Sai bot ' + returnmessage + 'hugs ' +  author + '!',msg);
+			unifiedIO.print('The Sai bot ' + returnmessage + ' hugs ' +  author + '!',msg);
 			
 		}
 		

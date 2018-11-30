@@ -27,18 +27,8 @@ module.exports = {
 					var selectedCollection = args[0];
 					var selectedItem = "";
 					
-					if (args.length > 2) {
-						// TODO: could replace this whole thing with args.slice(1).join(" ") ?
-						// Test it. It should work.
-						for(i = 1; i < args.length - 1; i++)
-						{
-							selectedItem += args[i] + ' ';
-						}
-						
-						selectedItem += args[args.length - 1];
-					} else {
-						selectedItem = args[1];
-					}
+					// Get all args after the first (which is selectedCollection)
+					selectedItem = args.slice(1).join(" ");
 					
 					// Get the list of collection names
 					let collecsListArray = await db.listCollections({},{nameOnly: true}).toArray();
@@ -69,7 +59,7 @@ module.exports = {
 						var collection = db.collection(selectedCollection);
 						collection.insert({ _id: autoIndex, value: selectedItem });
 						
-						unifiedIO.debugLog('Inserted "' + selectedItem + '" into ' + selectedCollection + '.');
+						unifiedIO.debugLog('Inserted "' + selectedItem + '" into ' + selectedCollection + '. (dbadd)');
 						
 					});
 					

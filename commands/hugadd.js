@@ -2,6 +2,8 @@ var unifiedIO = require('../unifiedIO.js');
 
 var autoIncrement = require("mongodb-autoincrement");
 
+var dbcmd = require("./db.js");
+
 
 var HugAdverbs = new Array ();
 HugAdverbs[0] = "firmly";
@@ -79,3 +81,55 @@ module.exports = {
 		
 	},
 };
+
+
+
+
+
+
+
+
+
+
+
+/*
+
+
+
+
+		}
+		else
+		{
+			
+			// TODO: Replace with selectedItem = args.join(" "); or whatever
+			for(i = 0; i < args.length - 1; i++)
+			{
+				returnmessage += args[i] + ' ';
+			}
+			
+			returnmessage += args[args.length - 1];
+			
+			if (!db) {
+				//initDb(function(err){});
+				
+				unifiedIO.print('SAI cannot remember to hug "' + returnmessage + '" right now. (No database)',msg); 
+				return;
+			}
+			
+			if (db) {
+				try {
+					
+					dbcmd.execute(msg,["add","hugs"].concat(args),db);
+					unifiedIO.print('The Sai bot can now hug ' + returnmessage + '!',msg);
+					
+				} catch (err) {
+					console.log(err);
+					unifiedIO.print('There was an error adding that to the database.');
+				}
+			
+			}
+			
+		}
+
+
+*/
