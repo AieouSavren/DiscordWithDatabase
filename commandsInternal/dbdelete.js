@@ -30,7 +30,7 @@ module.exports = {
 	execute: async function(msg, args, db) {
 		
 		if (!args.length) {
-			unifiedIO.print('Give me a collection, and an item to delete from it...',msg);
+			unifiedIO.print('Give me a collection, and an item to delete from it.',msg);
 		}
 		else
 		{

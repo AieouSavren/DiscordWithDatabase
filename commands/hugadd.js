@@ -29,8 +29,7 @@ module.exports = {
 		var returnmessage = "";
 		
 		if (!args.length) {
-			unifiedIO.print("Please give an adverb to add.",msg);
-			return;
+			unifiedIO.print("Please give an adverb to add to the list.",msg);
 			
 			//maybe pm a list of current adverbs o3o? It could be a very very long list... 
 		}
@@ -48,8 +47,10 @@ module.exports = {
 			if (db) {
 				try {
 					
+					unifiedIO.debugLog("Adverb to remove: " + returnmessage);
+					
+					
 					success = await dbadd.execute(msg,["hugs"].concat(args),db);
-					// It will return false if it reports an error.
 					if (success) {
 						unifiedIO.print('The Sai bot can now hug ' + returnmessage + '!',msg);
 					}

@@ -13,7 +13,7 @@ module.exports = {
 	execute: async function(msg, args, db) {
 		
 		if (!args.length) {
-			unifiedIO.print('Give me a collection, and an item to add to it...',msg);
+			unifiedIO.print('Give me a collection, and an item to add to it.',msg);
 		}
 		else
 		{
