@@ -1,6 +1,7 @@
 var unifiedIO = require('../unifiedIO.js');
 
 // TODO: Add the ability to view IDs as well? This command was originally designed to be used by "dumb users" who just want a list of current adverbs for hugs, so, uh, I dunno. The way I see it, if you're running the bot, you have access to the database. That might be asking a bit too much, though... if this bot gets used by more people, then we need to downgrade from "developer-level understanding" requirement for those running the bot, to "power-user-level understanding". Which means printing out IDs too, so they can use this command to debug, I guess.
+//   IDEA: Extend !dblist to take options saying whether you want IDs or not. The current behavior of !dblist will be provided to user as !huglist or similar. Then, !db list [collec] can be... ugh, I dunno, the same thing. The syntax is getting too complicated...
 
 
 module.exports = {
@@ -40,7 +41,7 @@ module.exports = {
 					
 					if (!collecNames.includes(selectedCollection)) {
 						unifiedIO.print("Error: " + selectedCollection + " is not a valid collection.",msg);
-						return;
+						return false;
 					}
 					
 					// First, we grab the whole collection, sorted in order by _id.
@@ -58,6 +59,7 @@ module.exports = {
 					unifiedIO.printSplit("Contents of " + selectedCollection + ": " + collecValues.join(', '),msg);
 					
 					
+					return true;
 					
 				}
 				catch(err)

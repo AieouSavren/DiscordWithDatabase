@@ -43,13 +43,14 @@ module.exports = {
 					
 					if (!collecNames.includes(selectedCollection)) {
 						unifiedIO.print("Error: " + selectedCollection + " is not a valid collection.",msg);
-						return;
+						return false;
 					}
 					
 					// If our collection is valid... fix it!
 					correctIDs(db,selectedCollection);
 					
 					
+					return true;
 					
 				}
 				catch(err)

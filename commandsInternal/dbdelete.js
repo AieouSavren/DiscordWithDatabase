@@ -31,8 +31,6 @@ module.exports = {
 		
 		if (!args.length) {
 			unifiedIO.print('Give me a collection, and an item to delete from it...',msg);
-		} else if (args.length == 1) {
-			unifiedIO.print('Use `!help ' + this.name + '` to see usage.',msg);
 		}
 		else
 		{
@@ -47,6 +45,7 @@ module.exports = {
 					var selectedItem = "";
 					
 					if (args.length > 2) {
+						// TODO: could replace this whole thing with args.slice(1).join(" ") ?
 						for(i = 1; i < args.length - 1; i++)
 						{
 							selectedItem += args[i] + ' ';
@@ -77,7 +76,12 @@ module.exports = {
 					
 					if (!collecNames.includes(selectedCollection)) {
 						unifiedIO.print("Error: " + selectedCollection + " is not a valid collection.",msg);
-						return;
+						return false;
+					}
+					
+					if (args.length == 1) {
+						unifiedIO.print('Please specify an item to delete from ' + selectedCollection + '.',msg);
+						return false;
 					}
 					
 					
@@ -91,7 +95,7 @@ module.exports = {
 					//console.log("Number of matches: " + numOfFind);
 					if (numOfFind == 0) {
 						unifiedIO.print("Error: No matches in given collection.",msg);
-						return;
+						return false;
 					}
 					
 					
@@ -109,7 +113,7 @@ module.exports = {
 					});
 					
 					
-					
+					return true;
 					
 				}
 				catch(err)

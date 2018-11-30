@@ -13,7 +13,7 @@ module.exports = {
 	execute: async function(msg, args, db) {
 		
 		if (!args.length) {
-			unifiedIO.print('Give me a collection.',msg);
+			unifiedIO.print('Give me a collection, and an item to add to it...',msg);
 		}
 		else
 		{
@@ -28,6 +28,8 @@ module.exports = {
 					var selectedItem = "";
 					
 					if (args.length > 2) {
+						// TODO: could replace this whole thing with args.slice(1).join(" ") ?
+						// Test it. It should work.
 						for(i = 1; i < args.length - 1; i++)
 						{
 							selectedItem += args[i] + ' ';
@@ -53,7 +55,12 @@ module.exports = {
 					
 					if (!collecNames.includes(selectedCollection)) {
 						unifiedIO.print("Error: " + selectedCollection + " is not a valid collection.",msg);
-						return;
+						return false;
+					}
+					
+					if (args.length == 1) {
+						unifiedIO.print('Please specify an item to add to ' + selectedCollection + '.',msg);
+						return false;
 					}
 					
 					
@@ -67,6 +74,7 @@ module.exports = {
 					});
 					
 					
+					return true;
 					
 				}
 				catch(err)

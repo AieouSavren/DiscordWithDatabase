@@ -16,9 +16,6 @@ HugAdverbs[8] = "zealously";
 HugAdverbs[9] = "ferociously";
 
 
-// TODO: Merge hugadd and tfadd?
-// One "dbadd" command, with arguments like this:
-// !dbadd [hug | tf] [adverb]
 
 module.exports = {
 	name: 'hugadd',

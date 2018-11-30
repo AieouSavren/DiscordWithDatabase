@@ -55,6 +55,9 @@ module.exports = {
 					case "d":
 						choice = "delete";
 						break;
+					case "r": // "r" for "remove"
+						choice = "delete";
+						break;
 					case "l":
 						choice = "list";
 						break;
@@ -65,26 +68,39 @@ module.exports = {
 						
 					}
 					
+					let success = false;
+					
+					// A note about the subcommands: They should return false if they encounter any sort of (non-fatal) error.
 					switch (choice) {
 					case "add":
-						dbadd.execute(msg,args.slice(1),db);
-						unifiedIO.print('Inserted "' + args[2] + '" into ' + args[1] + '.',msg);
+						success = await dbadd.execute(msg,args.slice(1),db);
+						// It will return false if it reports an error.
+						if (success) {
+							unifiedIO.print('Inserted "' + args.slice(2).join(" ") + '" into ' + args[1] + '.',msg);
+						}
 						break;
 					case "delete":
-						dbdelete.execute(msg,args.slice(1),db);
-						unifiedIO.print('"' + args[2] + '" has been removed from ' + args[1] + '.',msg);
+						success = await dbdelete.execute(msg,args.slice(1),db);
+						// It will return false if it reports an error.
+						if (success) {
+							unifiedIO.print('"' + args.slice(2).join(" ") + '" has been removed from ' + args[1] + '.',msg);
+						}
 						break;
 					case "list":
 						dblist.execute(msg,args.slice(1),db);
 						// !dblist prints out its own stuff, so... no need for anything extra.
 						break;
 					case "normalize":
-						dbnormalize.execute(msg,args.slice(1),db);
-						unifiedIO.print('Done. `!db list [collection]` can be used to view the collection.',msg);
+						success = await dbnormalize.execute(msg,args.slice(1),db);
+						// It will return false if it reports an error.
+						if (success) {
+							unifiedIO.print('Done. `!db list [collection]` can be used to view the collection.',msg);
+						}
 						break;
 					default:
 						unifiedIO.print("Not a valid choice. (Use `!help " + this.name + "` to see usage.)",msg);
 					}
+					
 					
 					
 				}
