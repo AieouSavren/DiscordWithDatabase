@@ -22,7 +22,7 @@ module.exports = {
 	cooldown: 5,
 	description: 'Removes a type of hug from the list!',
 	usage: '__adverb__',
-	execute(msg, args, db) {
+	execute: async function(msg, args, db) {
 		var returnmessage = "";
 		
 		if (!args.length) {
