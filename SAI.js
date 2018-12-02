@@ -44,7 +44,7 @@ for (const file of commandFiles) {
 }
 
 // DATABASE STUFF begins here.
- 
+
 var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 27017,
 	ip   = process.env.IP   || process.env.OPENSHIFT_NODEJS_IP   || '127.0.0.1',
 	mongoURL = process.env.OPENSHIFT_MONGODB_DB_URL || process.env.MONGO_URL,
@@ -78,6 +78,7 @@ var initDb = function(callback) {
 	var mongodb = require('mongodb');
 	if (mongodb == null) return;
 	
+	//  TODO: If necessary, add the options object {auth.user: mongoUser, auth.password: mongoPassword}
 	mongodb.connect(mongoURL, function(err, conn) {
 		if (err) {
 			callback(err);
