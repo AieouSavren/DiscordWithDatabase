@@ -14,74 +14,84 @@ const util = require('util');
 var unifiedIO = require('./unifiedIO.js');
 const DEBUGFLAG = (process.env.DEBUG_FLAG == "true");
 
-//  OpenShift sample Node application
+//  HTTP HANDLING begins here.
 var express = require('express'),
-    app     = express(),
-    morgan  = require('morgan');
-    
-Object.assign=require('object-assign')
+	app     = express(),
+	morgan  = require('morgan');
 
-app.engine('html', require('ejs').renderFile);
-app.use(morgan('combined'))
-//derp
+Object.assign = require('object-assign'); // What is this needed for?
+
+app.engine('html', require('ejs').renderFile); 
+app.use(morgan('combined'));
+// Every request SHOULD be logged in Apache combined format...
+// ...but as far as I can tell, express actually is not being
+// used to handle HTTP requests. Derp indeed.
+
+//  HTTP HANDLING ends here. ^^
 
 const commandFiles = fs.readdirSync('./commands').filter(file => file.endsWith('.js'));
 
 for (const file of commandFiles) {
-    const command = require(`./commands/${file}`);
-
-    // set a new item in the Collection
-    // with the key as the command name and the value as the exported module
-   commands.set(command.name, command);
+	//  TODO: Make it add stuff that is contained in subdirectories of /commands/, too.
+	//			(Probably not recursively, that would be a bad idea. But single folders for groups of commands.)
+	//			(Probably can be done by doing fs.readdir, and then for (dirs of theStuff) do { add commands in dir })
+	//  TODO: Make a directory for "smart aliases" (i.e. commands like !hugadd)
+	const command = require(`./commands/${file}`);
+	
+	// set a new item in the Collection
+	// with the key as the command name and the value as the exported module
+	commands.set(command.name, command);
 }
 
-//database
+// DATABASE STUFF begins here.
  
 var port = process.env.PORT || process.env.OPENSHIFT_NODEJS_PORT || 27017,
-    ip   = process.env.IP   || process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1',
-    mongoURL = process.env.OPENSHIFT_MONGODB_DB_URL || process.env.MONGO_URL,
-    mongoURLLabel = "";
+	ip   = process.env.IP   || process.env.OPENSHIFT_NODEJS_IP   || '127.0.0.1',
+	mongoURL = process.env.OPENSHIFT_MONGODB_DB_URL || process.env.MONGO_URL,
+	mongoURLLabel = "";
 
 if (mongoURL == null && process.env.DATABASE_SERVICE_NAME) {
-  var mongoServiceName = process.env.DATABASE_SERVICE_NAME.toUpperCase(),
-      mongoHost = process.env[mongoServiceName + '_SERVICE_HOST'],
-      mongoPort = process.env[mongoServiceName + '_SERVICE_PORT'],
-      mongoDatabase = process.env[mongoServiceName + '_DATABASE'],
-      mongoPassword = process.env[mongoServiceName + '_PASSWORD']
-      mongoUser = process.env[mongoServiceName + '_USER'];
+	var mongoServiceName = process.env.DATABASE_SERVICE_NAME.toUpperCase(),
+		mongoHost = process.env[mongoServiceName + '_SERVICE_HOST'],
+		mongoPort = process.env[mongoServiceName + '_SERVICE_PORT'],
+		mongoDatabase = process.env[mongoServiceName + '_DATABASE'],
+		mongoPassword = process.env[mongoServiceName + '_PASSWORD']
+		mongoUser = process.env[mongoServiceName + '_USER'];
 
-  if (mongoHost && mongoPort && mongoDatabase) {
-    mongoURLLabel = mongoURL = 'mongodb://';
-    if (mongoUser && mongoPassword) {
-      mongoURL += mongoUser + ':' + mongoPassword + '@';
-    }
-    // Provide UI label that excludes user id and pw
-    mongoURLLabel += mongoHost + ':' + mongoPort + '/' + mongoDatabase;
-    mongoURL += mongoHost + ':' +  mongoPort + '/' + mongoDatabase;
-
-  }
+	if (mongoHost && mongoPort && mongoDatabase) {
+		mongoURLLabel = mongoURL = 'mongodb://';
+		if (mongoUser && mongoPassword) {
+			mongoURL += mongoUser + ':' + mongoPassword + '@';
+		}
+		
+		// Provide UI label that excludes user id and pw
+		mongoURLLabel += mongoHost + ':' + mongoPort + '/' + mongoDatabase;
+		mongoURL += mongoHost + ':' +  mongoPort + '/' + mongoDatabase;
+	}
 }
 var db = null,
-    dbDetails = new Object();
+	dbDetails = new Object();
 
 var initDb = function(callback) {
 	if (mongoURL == null) return;
-
+	
 	var mongodb = require('mongodb');
 	if (mongodb == null) return;
-
+	
 	mongodb.connect(mongoURL, function(err, conn) {
 		if (err) {
 			callback(err);
 			return;
 		}
-
+		
 		db = conn;
-		dbDetails.databaseName = db.databaseName; //there's a defined default?... apparently admin on unsecure systems. 
+		dbDetails.databaseName = db.databaseName;
+		// ^ By default ("on unsecured systems" according to Ed's old comment), this is the "admin" db.
+		//      TODO: Change this so Sai creates its own db. Could just call it "saibot".
 		dbDetails.url = mongoURLLabel;
 		dbDetails.type = 'MongoDB';
-
-		console.log('Connected to MongoDB at: %s', mongoURL);
+		
+		console.log('Connected to MongoDB at: ' + mongoURL);
 	});
 };
 
@@ -89,46 +99,38 @@ initDb(function(err){
 	console.log('Error connecting to Mongo. Message:\n'+err);
 });
 
-//database functions above
+//  DATABASE STUFF ends here. ^^
 
-
+unifiedIO.debugLog("====== Debug mode on. ======");
 
 client.on('ready', () => {
   console.log(`Logged in as ${client.user.tag}!`);
   client.user.setActivity({game: {name: "meditating", type: 0}});
 });
 
-/* REMEMBER TO UNCOMMENT THIS
 const rl = readline.createInterface({
 	input: process.stdin,
 	output: process.stdout
 });
 
-// IGNORE THIS TOO FOR NOW
-// (part of input unification)
-
 rl.on('line', (receivedLine) => {
 	// If debug mode is ON, do the readline thing
 	if (DEBUGFLAG) {
-		onLineInput(receivedLine);
+		onNewInput(receivedLine);
 	}
 });
 
 client.on("message", async message => {
 	// If debug mode is off, do the client thing
 	if (!DEBUGFLAG) {
-		onLineInput(message);
+		onNewInput(message);
 	}
-}
-// don't forget about disabling client.login(process.env.TOKEN) too
-
-*/
-
-client.on("message", async message => {
-	onNewInput(message);
 });
 
-function onNewInput(msg) {
+
+
+
+async function onNewInput(msg) {
 	/* "msg" can be either a string or a Message object.
 		This function will be written to accept both,
 		using the "process.env.DEBUG_FLAG" to determine which
@@ -140,7 +142,9 @@ function onNewInput(msg) {
 		initDb(function(err){});
 	}
 	
-	if(msg.author.bot) return; //no bot to bot chatter
+	if (!DEBUGFLAG) {
+		if (msg.author.bot) return; //no bot to bot chatter
+	}
 	
 	/*
 	// Example code to prevent non-administrator roles from using the bot
@@ -154,17 +158,18 @@ function onNewInput(msg) {
 	if (!DEBUGFLAG) {
 		var input = msg.content;
 	}
-	// NOTE TO SELF: DO THE SAME FOR THINGS LIKE "AUTHOR". //
+	// TODO: DO THE SAME FOR THINGS LIKE "AUTHOR". i.e., provide a unified value for author so that things that use it don't complain about msg not having that property.  //
 	
 	if (!input.startsWith(process.env.PREFIX)) return;
 	
 	const args = input.slice(process.env.PREFIX.length).trim().split(/ +/g);
-	const commandName = args.shift().toLowerCase();
+	const commandName = args.shift().toLowerCase(); // shift pops the first element of the array
 	/* After these two statements, args consists of an array of arguments,
-		minus the command that directly follows the prefix. */
+		minus the command that directly follows the prefix.
+	   Example: !hug quite nicely -> ["quite","nicely"]*/
 	
 	
-	//  INPUT VALIDATION begins here. VV
+	//  INPUT VALIDATION begins here.
 	
 	//the command is empty!
 	if(commandName == "")
@@ -198,7 +203,7 @@ function onNewInput(msg) {
 	//that's not a command name!
 	if (!command) 
 	{
-		unifiedIO.print('The Sai bot meditates in an attempt to understand your command better.',msg);		
+		unifiedIO.print('The Sai bot meditates in an attempt to understand your command better.',msg);
 		return;
 	}
 	
@@ -209,43 +214,47 @@ function onNewInput(msg) {
 		initDb(function(err){});
 	}
 	
-	//does our command have a cool down?
-	if (!cooldowns.has(command.name)) {
-		cooldowns.set(command.name, new Discord.Collection());
-	}
-
-	//what time is it
-	const now = Date.now();
-	const timestamps = cooldowns.get(command.name);
 	
-	//default cooldown is 1s
-	const cooldownAmount = (command.cooldown || 1) * 1000;
-
-	if (!timestamps.has(msg.author.id)) {
-		//okay you're fine to use the command
-		timestamps.set(msg.author.id, now);
-		setTimeout(() => timestamps.delete(msg.author.id), cooldownAmount);
-	}
-	else {
-		const expirationTime = timestamps.get(msg.author.id) + cooldownAmount;
-
-		//uh-oh you've gotta wait
-		if (now < expirationTime) {
-			const timeLeft = (expirationTime - now) / 1000;
-			return unifiedIO.print(msg.author + `, please wait ${timeLeft.toFixed(1)} more second(s) before reusing the \`${command.name}\` command.`,msg);
+	// Cooldown mechanics
+	if (!DEBUGFLAG) {
+		//does our command have a cool down?
+		if (!cooldowns.has(command.name)) {
+			cooldowns.set(command.name, new Discord.Collection());
 		}
 
-		timestamps.set(msg.author.id, now);
-		setTimeout(() => timestamps.delete(msg.author.id), cooldownAmount);
+		//what time is it
+		const now = Date.now();
+		const timestamps = cooldowns.get(command.name);
+	
+		//default cooldown is 1s
+		const cooldownAmount = (command.cooldown || 1) * 1000;
+
+		if (!timestamps.has(msg.author.id)) {
+			//okay you're fine to use the command
+			timestamps.set(msg.author.id, now);
+			setTimeout(() => timestamps.delete(msg.author.id), cooldownAmount);
+		}
+		else {
+			const expirationTime = timestamps.get(msg.author.id) + cooldownAmount;
+
+			//uh-oh you've gotta wait
+			if (now < expirationTime) {
+				const timeLeft = (expirationTime - now) / 1000;
+				return unifiedIO.print(msg.author + `, please wait ${timeLeft.toFixed(1)} more second(s) before reusing the \`${command.name}\` command.`,msg);
+			}
+
+			timestamps.set(msg.author.id, now);
+			setTimeout(() => timestamps.delete(msg.author.id), cooldownAmount);
+		}
+		//cooldowns done 
 	}
-	//cooldowns done 
 	
 	try {
-		 command.execute(msg, args, db, aborts);
+		command.execute(msg, args, db, aborts);
 	}
 	catch (error) {
 		console.error(error);
-		unifiedIO.print(msg.author + ', there was an error trying to execute that command!', msg);
+		unifiedIO.print(msg.author + ', there was an error trying to execute that command!',msg);
 	}
 	
 	//Close the DB... we're async... so this might create a race condition... hopefully a defult time out will handle it. 
@@ -256,6 +265,7 @@ function onNewInput(msg) {
 // Create an event listener for new guild members
 client.on('guildMemberAdd', member => {
 	// Send the message to a designated channel on a server:
+	// TODO: Delegate stuff like this to a config file?
 	const channel = member.guild.channels.find('name', 'shrine-artificial-intellegence');
 	// Do nothing if the channel wasn't found on this server
 	if (!channel) return;
@@ -266,6 +276,7 @@ client.on('guildMemberAdd', member => {
 // Create an event listener for leaving guild members
 client.on('guildMemberRemove', member => {
 	// Send the message to a designated channel on a server:
+	// TODO: Delegate stuff like this to a config file?
 	const channel = member.guild.channels.find('name', 'shrine-artificial-intellegence');
 	// Do nothing if the channel wasn't found on this server
 	if (!channel) return;
@@ -273,4 +284,6 @@ client.on('guildMemberRemove', member => {
 	channel.send(`${member} has left the server`);
 });
 
-client.login(process.env.TOKEN);
+if (!DEBUGFLAG) {
+	client.login(process.env.TOKEN);
+}

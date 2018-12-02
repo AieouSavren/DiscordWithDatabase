@@ -3,13 +3,15 @@ const Discord = require('discord.js');
 //be sure to change const command = require(`./commands/${file}`); to const command = require(`./${file}`);
 //or the proper directory. It will ignore the current command that way. Ummm it's a feature so we made it global in scope to fix that.
 
+var unifiedIO = require('../unifiedIO.js');
+
 module.exports = {
-    name: 'help',
+	name: 'help',
 	aliases: ['commands'],
 	cooldown: 0,
-    description: 'List all of my commands, or info about a specific command.',
-    usage: '[command]',
-    execute(msg, args) {
+	description: 'List all of my commands, or info about a specific command.',
+	usage: '[command]',
+	execute(msg, args) {
 		const data = [];
 		
 		//msg.reply('' + commands.map(command => command.name).join(', ') + '');
@@ -22,23 +24,25 @@ module.exports = {
 			//consider adjusting the cool down?
 			
 			if (!commands.has(args[0])) {
-				return msg.channel.send(msg.author + ', that\'s not a valid command!');
+				unifiedIO.print(msg.author + ', that\'s not a valid command!',msg)
+				return;
 			}
-
+			
 			const command = commands.get(args[0]);
 			const prefix = process.env.PREFIX;
-
+			
 			data.push(`**Name:** ${command.name}`);
-
+			
 			if (command.description) data.push(`**Description:** ${command.description}`);
 			if (command.aliases) data.push(`**Aliases:** ${command.aliases.join(', ')}`);
 			if (command.usage) data.push(`**Usage:** ${prefix}${command.name} ${command.usage}`);
-
+			
 			data.push(`**Cooldown:** ${command.cooldown || 1} second(s)`);
 		}
-
 		
-		msg.channel.send(data, { split: true })
+		
+		unifiedIO.printSplit(data,msg);
+		
 		
 		//dm? No people probably wanna know it's got a cool down too.
 			/*
