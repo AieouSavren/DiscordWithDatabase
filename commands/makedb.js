@@ -20,7 +20,7 @@ module.exports = {
 	name: 'makedatabase',
 	aliases: ['setup', 'makedb'],
 	cooldown: 5,
-	description: 'Builds a database! Be amazed, be very amazed.',
+	description: 'Inserts an initial set of adverbs into the database.',
 	usage: ' ',
 	execute(msg, args, db) {
 		if (process.env.DEBUG_FLAG != "true") {

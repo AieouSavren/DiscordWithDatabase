@@ -54,6 +54,7 @@ module.exports = {
 					}
 					
 					
+					//  TODO: Convert to using Promises instead
 					autoIncrement.getNextSequence(db, selectedCollection, function (err, autoIndex) {
 						if (err) throw err;
 						var collection = db.collection(selectedCollection);

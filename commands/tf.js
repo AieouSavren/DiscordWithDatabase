@@ -5,7 +5,7 @@ module.exports = {
 	aliases: [],
 	cooldown: 5,
 	description: 'Time for a blessing!',
-	usage: '[adjective] [species] ...',
+	usage: '[__adjective__] [__species__] ...',
 	execute(msg, args, db) {
 		var InflatableTypes = new Array ();
 		InflatableTypes[0] = " parade balloon";
