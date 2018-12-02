@@ -5,7 +5,7 @@ var unifiedIO = require('../unifiedIO.js');
 module.exports = {
 	name: 'roll',
 	aliases: ['rolls'],
-	cooldown: 5,
+	cooldown: 1,
 	description: 'Let\'s roll some dice!',
 	usage: '[number of dice]d[number of sides]',
 	execute(msg, args, db, abort) {

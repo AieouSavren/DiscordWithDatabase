@@ -7,7 +7,7 @@ module.exports = {
 	name: 'tfdelete',
 	aliases: ['deletetfs', 'deletetf', 'tfsdelete', 'tfremove'],
 	cooldown: 5,
-	description: 'Remove an inflatable type or species to delete from the list.',
+	description: 'Remove an inflatable type or species from the list.',
 	usage: '[ __inflatable_type__ | __species_name__ ]',
 	execute: async function(msg, args, db) {
 		
@@ -22,7 +22,7 @@ module.exports = {
 			// TODO: Decide whether to stick with this syntax, or to .join() multiple args like normal.
 			//			Remember to add `usage` when this change is made.
 			// Do note that this currently only accepts one arg and ignores all the rest.
-			args[0] = args[0].replace(/_/g, ' ');
+			selectedItem = args.join(" ");
 			var selectedItem = args[0];
 			
 			if (!db) {
@@ -33,20 +33,14 @@ module.exports = {
 			if (db) {
 				try {
 					
-					// TODO: Here's the plan.
-					//			accept a single argument,
-					//			which it then searches for in BOTH collections,
-					//			and if it finds a match in one of them, it deletes it.
-					//			And if it finds a match in *both* for whatever reason,
-					//			Then it will tell the user.
-					// TODO: Convert the above comment into a series of comments explaining the code.
-					
-					// Selects all entries that match the given item
+					// Selects all entries that match the given item.
 					var query = { value: { $eq: selectedItem} };
 					
+					// We search for our query in BOTH collections.
 					var InfsCursor = await db.collection('tfinfs').find(query);
 					var SpeciesCursor = await db.collection('tfspecies').find(query);
 					
+					// Call .count() on the cursors to find the number of matches.
 					var numOfMatchInfs = await InfsCursor.count();
 					var numOfMatchSpecies = await SpeciesCursor.count();
 					
@@ -64,6 +58,7 @@ module.exports = {
 						return; // For now we'll just return.
 					} else {
 						unifiedIO.debugLog("One or more matches in a single collection.");
+						
 						if (numOfMatchInfs >= 1) {
 							unifiedIO.debugLog("Deleting from infs...");
 							

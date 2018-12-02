@@ -86,12 +86,12 @@ var initDb = function(callback) {
 		
 		db = conn;
 		dbDetails.databaseName = db.databaseName;
-		// ^ By default ("on unsecured systems" according to Ed's previous comment), this is the "admin" db.
-		//      TODO: Change this so Sai creates its own db. 
+		// ^ By default ("on unsecured systems" according to Ed's old comment), this is the "admin" db.
+		//      TODO: Change this so Sai creates its own db. Could just call it "saibot".
 		dbDetails.url = mongoURLLabel;
 		dbDetails.type = 'MongoDB';
 		
-		console.log('Connected to MongoDB at: %s', mongoURL); // Does this really need to be a format string? Just concat...
+		console.log('Connected to MongoDB at: ' + mongoURL);
 	});
 };
 

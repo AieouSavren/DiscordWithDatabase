@@ -1,12 +1,6 @@
 var unifiedIO = require('../unifiedIO.js');
 
 
-//  TODO: !db [add | delete | list | normalize]
-//		  5. Replace !hugadd and the like.
-//			This aliasing can be performed simply with require() and execute(), manually passing args.
-//			In hugadd.js:
-//				var dbcmd = require("./db.js");
-//				dbcmd.execute(msg,["add","hugs"] + args,db);
 //  TODO: Somehow prevent !db from working on collections that it's not for (i.e., more than one column)...? Whitelist?
 //				Possible solution: Add a *new* collection that lists the collections that !dbdelete is allowed to work on
 //				(insert expanding brain meme here)
@@ -18,6 +12,7 @@ var unifiedIO = require('../unifiedIO.js');
 //					else { command.execute(msg, args, db, aborts); }
 //				}
 //  TODO: Add syntax usage for !db, so users can actually figure it out... man page? (thonk emoji)
+//  TODO: Enforce uniqueness on inserted items.
 
 
 

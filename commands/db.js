@@ -42,6 +42,13 @@ module.exports = {
 		}
 		else
 		{
+			
+			if (process.env.DEBUG_FLAG != "true") {
+				if (!msg.member.roles.some(r=>["Administrator", "Moderator"].includes(r.name)) )
+					return msg.reply("Sorry, you don't have permissions to use this!");
+			}
+			
+			
 			if (!db) {
 				unifiedIO.print('Database is not mounted.',msg);
 			}
