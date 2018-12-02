@@ -1,7 +1,7 @@
 # DiscordWithDatabase
 A Discord bot with various commands and Mongo database support.
 
-Getting the bot running locally:
+Getting the bot running locally (in test mode):
 
 1. Install the dependencies
    
@@ -15,11 +15,11 @@ Getting the bot running locally:
 
 3. Open the repo
    
-   Open the file Index.js inside the folder DiscordWithDatabase
+   Open the file `.env` inside the folder DiscordWithDatabase
    
-   Change `var sai = require('./SAI.js');`
+   Change `DEBUG_FLAG=false`
    
-   to `var sai = require('./TestSAI.js');`
+   to `DEBUG_FLAG=true`
 
 4. Navigate to the repo with your terminal (e.g., `cd 'C:\Users\Ed\Documents\GitHub\DiscordWithDatabase'` in Windows) 
 
