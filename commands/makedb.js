@@ -56,7 +56,7 @@ module.exports = {
 			}
 			
 		} else {
-			unifiedIO.print('db issues...',msg);
+			unifiedIO.print("You shouldn't see this message. (!makedb error)",msg);
 		}
 		
 		unifiedIO.print("Added initial hug adverbs.",msg);

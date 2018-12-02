@@ -47,7 +47,7 @@ module.exports = {
 			if (db) {
 				try {
 					
-					unifiedIO.debugLog("Adverb to remove: " + returnmessage);
+					unifiedIO.debugLog("Adverb to add: " + returnmessage);
 					
 					
 					success = await dbadd.execute(msg,["hugs"].concat(args),db);

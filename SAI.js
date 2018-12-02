@@ -57,7 +57,7 @@ if (mongoURL == null && process.env.DATABASE_SERVICE_NAME) {
 		mongoDatabase = process.env[mongoServiceName + '_DATABASE'],
 		mongoPassword = process.env[mongoServiceName + '_PASSWORD']
 		mongoUser = process.env[mongoServiceName + '_USER'];
-
+	
 	if (mongoHost && mongoPort && mongoDatabase) {
 		mongoURLLabel = mongoURL = 'mongodb://';
 		if (mongoUser && mongoPassword) {
@@ -86,7 +86,7 @@ var initDb = function(callback) {
 		
 		db = conn;
 		dbDetails.databaseName = db.databaseName;
-		// ^ By default ("on unsecured systems" according to Ed's old comment), this is the "admin" db.
+		// ^ Locally, by default ("on unsecured systems" according to Ed's old comment), this is the "admin" db.
 		//      TODO: Change this so Sai creates its own db. Could just call it "saibot".
 		dbDetails.url = mongoURLLabel;
 		dbDetails.type = 'MongoDB';
@@ -285,5 +285,6 @@ client.on('guildMemberRemove', member => {
 });
 
 if (!DEBUGFLAG) {
+	//  TODO: Make this catch an invalid token and report it to the user.
 	client.login(process.env.TOKEN);
 }
