@@ -12,7 +12,7 @@ var unifiedIO = require('../unifiedIO.js');
 //					else { command.execute(msg, args, db, aborts); }
 //				}
 //  TODO: Add syntax usage for !db, so users can actually figure it out... man page? (thonk emoji)
-//  TODO: Enforce uniqueness on inserted items.
+//  TODO: Enforce uniqueness on items inserted with !dbadd.
 
 
 

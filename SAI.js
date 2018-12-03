@@ -159,7 +159,6 @@ async function onNewInput(msg) {
 	if (!DEBUGFLAG) {
 		var input = msg.content;
 	}
-	// TODO: DO THE SAME FOR THINGS LIKE "AUTHOR". i.e., provide a unified value for author so that things that use it don't complain about msg not having that property.  //
 	
 	if (!input.startsWith(process.env.PREFIX)) return;
 	
