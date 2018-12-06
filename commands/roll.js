@@ -1,6 +1,6 @@
 var unifiedIO = require('../unifiedIO.js');
 
-//  TODO: Add support for rolls like "3d4+3"!
+//  TODO: Add support for rolls like "3d4+3"
 
 module.exports = {
 	name: 'roll',
@@ -17,6 +17,7 @@ module.exports = {
 		} else {
 			if (args[0].includes("d")) {
 				var rolls = args[0].split("d");
+				//var rollsList = []
 				
 				if (rolls.length == 2) {
 					
@@ -34,7 +35,11 @@ module.exports = {
 						returnnum = returnnum + 1;
 						
 						unifiedIO.print('roll: ' + returnnum,msg);
+						//rollsList.push(returnnum);
 					}
+					
+					//unifiedIO.print('rolls: ' + rollsList,msg);
+					
 				} else {
 					unifiedIO.print('Didn\'t split properly. Expecting the command in the format of !roll 1d20',msg);
 				}
